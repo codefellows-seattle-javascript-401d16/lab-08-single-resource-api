@@ -5,7 +5,7 @@ const http = require('http');
 const router = require('./router.js');
 const Insta = require('../model/insta.js');
 
-var storage = {};
+let storage = {};
 
 // register routes with router
 
@@ -73,10 +73,16 @@ router.put('/api/instas', (req, res) => {
 
   console.log(storage[req.url.query.id]);
 
+  if (req.body.content) storage[req.url.query.id].content = req.body.content;
+
+  if (req.body.image) storage[req.url.query.id].image = req.body.image;
+
+  console.log(storage[req.url.query.id]);
+
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(insta));
+  res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 });
 
@@ -84,7 +90,7 @@ router.delete('/api/instas', (req, res) => {
   if(!req.url.query.id) {
     res.writeHead(204);
   }
-})
+});
 
 // create server
 const server = module.exports = http.createServer(router.route);
