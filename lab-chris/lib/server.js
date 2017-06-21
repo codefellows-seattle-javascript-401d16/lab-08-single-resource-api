@@ -7,7 +7,7 @@ const uuid = require('uuid');
 var storage = {};
 
 router.get('/hello', (req, res) => {
-  res.write('yeyyeyeyye');
+  res.write('world');
   res.end();
 });
 
@@ -25,7 +25,7 @@ router.post('/api/notes', (req, res) => {
   };
 
   storage[note.id] = note;
-  res.writeHead(200, {
+  res.writeHead(201, {
     'Content-Type': 'application/json',
   });
   res.write(JSON.stringify(note));
