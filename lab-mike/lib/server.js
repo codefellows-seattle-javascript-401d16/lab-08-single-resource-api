@@ -6,7 +6,7 @@ const router = require('./router.js');
 
 var storage = {};
 
-router.post('/api/simple-resource-name', (req, res) => {
+router.post('/api/notes', (req, res) => {
   if (!req.body.content) {
     res.write(400);
     res.end();
@@ -27,9 +27,12 @@ router.post('/api/simple-resource-name', (req, res) => {
   // pass data as stringifed json in the body of a post request to create a resource
 });
 
-router.get('/api/simple-resource-name', (req, res) => {
+router.get('/api/notes', (req, res) => {
   if (!req.url.query.id) {
-    res.writeHead(400);
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
+    res.write(JSON.stringify(storage));
     res.end();
     return;
   }
@@ -49,7 +52,7 @@ router.get('/api/simple-resource-name', (req, res) => {
 });
 // pass an ?id=<uuid> in the query string to retrieve a specific resource as json
 
-router.delete('/api/simple-resource-name', (res, req) => {
+router.delete('/api/notes', (res, req) => {
   if (!req.url.query.id) {
     res.writeHead(400);
     res.end();
@@ -69,7 +72,7 @@ router.delete('/api/simple-resource-name', (res, req) => {
 // pass an ?id=<uuid> in the query string to delete a specific resource
 // should return 204 status with no content in the body
 
-router.put('/api/simple-resource-name', (res, req) => {
+router.put('/api/notes', (res, req) => {
   if (!req.url.query.id) {
     res.writeHead(400);
     res.end();
@@ -82,9 +85,21 @@ router.put('/api/simple-resource-name', (res, req) => {
     return;
   }
 
+  if (!req.body.content) {
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  if (!req.body.creationDate) {
+    res.write(400);
+    res.end();
+    return;
+  }
+
   //stringify the creationdate and content
-  let creationDate;
-  let content;
+  let creationDate = req.body.creationDate;
+  let content = req.body.content;
   storage[req.url.query.id.creationDate] = creationDate;
   storage[req.url.query.id.content] = content;
 });
