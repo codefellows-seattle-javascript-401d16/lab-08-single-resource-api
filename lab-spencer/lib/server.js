@@ -4,7 +4,7 @@ const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
 
-var storage = {}
+var db = {};
 
 router.post('/api/seahawks', (req, res) => {
   console.log('hit /api/seahawks');
@@ -12,6 +12,7 @@ router.post('/api/seahawks', (req, res) => {
     res.writeHead(400, {
       'Content-Type': 'text/plain',
     });
+    res.write('Bad request!');
     res.end();
     return;
   }
@@ -23,35 +24,41 @@ router.post('/api/seahawks', (req, res) => {
     picture: req.body.picture,
   };
 
-  storage[note.id] = note;
+  db[seahawk.id] = seahawk;
+
   res.writeHead(200, {
     'Content-Type': 'application/json',
-  })
-  res.write(JSON.stringify(note))
-  res.end()
+  });
+  res.write(JSON.stringify(seahawk));
+  res.end();
+  return;
 });
 
-router.get('/api/notes', (req, res) => {
+router.get('/api/seahawks', (req, res) => {
   if(!req.url.query.id){
-    res.writeHead(400)
+    res.writeHead(400, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Bad request!');
     res.end()
-    return ;
+    return;
   }
 
-  if(!storage[req.url.query.id]){
-    res.writeHead(404)
-    res.end()
-    return ;
+  if(!db[req.url.query.id]) {
+    res.writeHead(404, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Seahawk not found!');
+    res.end();
+    return;
   }
 
   res.writeHead(200, {
     'Content-Type': 'application/json',
-  })
-
-  res.write(JSON.stringify(storage[req.url.query.id]))
-  res.end()
-
+  });
+  res.write(JSON.stringify(db[req.url.query.id]));
+  res.end();
+  return;
 });
 
-// create server
 const server = module.exports = http.createServer(router.route);
