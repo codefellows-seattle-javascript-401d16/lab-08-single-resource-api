@@ -15,7 +15,6 @@ router.get = (pathname, callback) => {
   routes.GET[pathname] = callback;
 };
 
-
 router.post = (pathname, callback) => {
   routes.POST[pathname] = callback;
 };
