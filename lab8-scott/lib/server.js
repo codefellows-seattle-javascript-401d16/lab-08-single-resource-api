@@ -1,6 +1,7 @@
 'use strict';
 
 const http = require('http');
+const Profileconstructor = require('../model/profile-constructor.js');
 const uuid = require('uuid');
 
 let climberPool = {};
@@ -11,19 +12,15 @@ router.post(`/api/climbers`, (req, res)=>{
     res.end();
     return;
   }
-  //start of my object constructor on POST requests
-  let climberProfile = {
-    id: uuid.v1(),
-    age: req.body.age,
-    style: req.body.style,
-  };
-  //putting the new profile object from the POST request in to the climberpool object
-  climberPool[climberProfile] = climberProfile;
+  //creating a new profile based on the parsed body from the post request
+  let newClimberProfile = new Profileconstructor(req.body.age, req.body.style);
+  //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
+  climberPool[newClimberProfile.id] = newClimberProfile;
   //respond that we recieved the request
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });
-  res.write(JSON.stringify(climberProfile));
+  res.write(JSON.stringify(newClimberProfile));
   res.end();
   return;
 });
