@@ -1,0 +1,22 @@
+{
+  "name": "lab-jeff",
+  "version": "1.0.0",
+  "description": "lab-08",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2",
+    "superagent": "^3.5.2",
+    "uuid": "^3.1.0"
+  }
+}
