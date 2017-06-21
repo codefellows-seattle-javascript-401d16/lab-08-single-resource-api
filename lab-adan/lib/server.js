@@ -11,8 +11,8 @@ var storage = {};
 // app modules
 // module logic
 // register routes with router
-router.get('/hello', (req, res) => {
-  res.write('yeyyeyeyye');
+router.get('/game', (req, res) => {
+  res.write('Let\'s Play');
   res.end();
 });
 
@@ -26,16 +26,16 @@ router.post('/api/notes', (req, res) => {
   }
 
   // uuid  genorate a random string that will not likely conflict with a future random string
-  let note = {
+  let game = {
     id: uuid.v1(),
     content: req.body.content,
   };
 
-  storage[note.id] = note;
+  storage[game.id] = game;
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(note));
+  res.write(JSON.stringify(game));
   res.end();
 });
 
