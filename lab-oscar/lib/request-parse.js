@@ -32,4 +32,5 @@ module.exports = (req, callback) => {
     req.body = {};
     callback(null);
   }
+
 };
