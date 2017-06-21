@@ -1,0 +1,30 @@
+{
+  "name": "lab-08-single-resource-api",
+  "version": "1.0.0",
+  "description": "![cf](https://i.imgur.com/7v5ASc8.png) lab-08-single-resource-api =====",
+  "main": "index.js",
+  "scripts": {
+    "start": "index.js",
+    "test": "mocha",
+    "lint": "eslint"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/izzybaer/lab-08-single-resource-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/izzybaer/lab-08-single-resource-api/issues"
+  },
+  "homepage": "https://github.com/izzybaer/lab-08-single-resource-api#readme",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2",
+    "superagent": "^3.5.2"
+  },
+  "dependencies": {
+    "uuid": "^3.1.0"
+  }
+}
