@@ -32,7 +32,7 @@ router.put = (pathname, callback) => {
 router.route = (req, res) => {
   // parse the requestParse
   requestParse(req, (err) => {
-    // if the parsingn failed send back 400 bad requestParse
+    // if the parsing failed send back 400 bad requestParse
     //console.log('req.url', req.url);
     //console.log('req.headers', req.heaaders);
     //console.log('req.text', req.text);
@@ -44,5 +44,14 @@ router.route = (req, res) => {
       res.end();
       return;
     }
-  })
-}
+    // if there is a callback for the request, invoke it
+    let routeHandler = routes[req.method][req.url.pathname];
+
+    if(routeHandler){
+      routeHandler(req, res);
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+};
