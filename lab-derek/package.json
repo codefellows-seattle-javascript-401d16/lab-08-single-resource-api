@@ -1,0 +1,24 @@
+{
+  "name": "lab-derek",
+  "version": "1.0.0",
+  "description": "## Cowsay Lab creates a server on localhost 3000 and accepts GET and POST HTTP requests including text in the query (for GET) or the body (for POST), returning a response in which a cow 'says' the text.",
+  "main": "index.js",
+  "directory": "test",
+  "scripts": {
+    "test": "mocha",
+    "lint": "eslint",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^4.0.0",
+    "expect": "^1.20.2",
+    "mocha": "^3.4.2"
+  },
+  "dependencies": {
+    "superagent": "^3.5.2",
+    "uuid": "^3.1.0"
+  }
+}
