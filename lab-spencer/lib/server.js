@@ -58,4 +58,26 @@ router.get('/api/seahawks', (req, res) => {
   return;
 });
 
+router.put('/api/seahawks', (req, res) => {
+  let body = req.body;
+  if(!body.id || !body.name || !body.height || !body.weight || !body.position || !body.picture) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Bad request!');
+    res.end();
+    return;
+  }
+
+  let player = new Seahawk(body.id, body.name, body.height, body.weight, body.position, body.picture);
+  team.players[body.id] = player;
+
+  res.writeHead(202, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(player));
+  res.end();
+  return;
+});
+
 module.exports = http.createServer(router.route);
