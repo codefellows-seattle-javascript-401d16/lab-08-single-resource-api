@@ -2,32 +2,32 @@
 =====
 
 # To Submit this Assignment
-  * fork this repository
-  * write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-duncan`
+  <!-- * fork this repository -->
+  <!-- * write all of your code in a directory named `lab-` + `<your name>` **e.g.** `lab-duncan` -->
   * push to your repository
   * submit a pull request to this repository
   * submit a link to your PR in canvas
   * write a question and observation on canvas
 
 # Build Tool Instructions
-* create a package.json that lists all dependencies and developer dependencies
-* include an .eslintrc
-* include a .gitignore
+<!-- * create a package.json that lists all dependencies and developer dependencies -->
+<!-- * include an .eslintrc -->
+<!-- * include a .gitignore -->
 * include a readme with project description
-* include any npm scripts for starting server, linting, testing, etc
+<!-- * include any npm scripts for starting server, linting, testing, etc -->
 
 # Directions
-* Create these directories to organize your code:
- * lib
- * model
- * test
-* Create a HTTP Server using the http module
+<!-- * Create these directories to organize your code: -->
+ <!-- * lib -->
+ <!-- * model -->
+ <!-- * test -->
+<!-- * Create a HTTP Server using the http module -->
 * Create a Object Constructor that creates a _simple resource_ with at least 3 properties
  * An `id` property that is set to a unique **node-uuid** id is required
  * Also include two other properties of your choice (like name, creationDate, etc.)
-* Create a body parser to parse the json in the body of `POST` and `PUT` requests
-* Create a url parser that uses nodes `url` and `querystring` modules parse the request url
-* Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests
+<!-- * Create a body parser to parse the json in the body of `POST` and `PUT` requests -->
+<!-- * Create a url parser that uses nodes `url` and `querystring` modules parse the request url -->
+<!-- * Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests -->
 * Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_
 * Create a storage module that will store resources by their type and id
 
@@ -60,4 +60,3 @@
 
 ## Bonus
 * **2pts** a `GET` request to `/api/simple-resource-name` with no **?id=** should return an array of all of the ids for that resource
-
