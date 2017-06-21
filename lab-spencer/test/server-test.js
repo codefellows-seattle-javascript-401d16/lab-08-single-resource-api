@@ -3,7 +3,16 @@
 const superagent = require('superagent');
 const expect = require('expect');
 const server = require('../lib/server.js');
-const seahawk = require('../model/seahawk.js');
+const Seahawk = require('../model/seahawk.js');
+
+describe('Seahawk model test', () => {
+  it('Should return a Seahawk Object', () => {
+    let me = new Seahawk('Spencer Gietzen', 'TB', 'rand/pic.png');
+    expect(me.name).toEqual('Spencer Gietzen');
+    expect(me.position).toEqual('TB');
+    expect(me.picture).toEqual('rand/pic.png');
+  });
+});
 
 describe('/api/seahawks routes', () => {
   let tempSeahawk;
