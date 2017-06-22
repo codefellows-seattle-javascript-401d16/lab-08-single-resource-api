@@ -26,7 +26,7 @@ router.get('/api/user', (req, res) => {
 });
 
 router.put('/api/user', (req, res) => {
-  const id = req.url.query.id;
+  const id = req.url.query.id || req.body.id;
   const { name, password, email } = req.body;
   if (!database[id]) return headWrite(res, 400);
   if (!name || !password || ! email) return headWrite(res, 400);
@@ -38,7 +38,7 @@ router.delete('/api/user', (req, res) => {
   const id = req.url.query.id;
   if (!database[id]) return headWrite(res, 400);
   delete database[id];
-  headWrite(res, 200, `user successfully removed`);
+  headWrite(res, 204);
 });
 
 module.exports = http.createServer(router.route);
