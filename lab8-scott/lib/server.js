@@ -7,16 +7,15 @@ const ProfileConstructor = require('../model/profile-constructor.js');
 let climberPool = {};
 
 //start of the route for Create/Post. Start with create so we have something in the db to work with.
-router.post(`/api/climberprofile`, (req, res)=>{
-  if(!req.body.age && !req.body.style) {
+router.post('/api/climberprofile', (req, res)=>{
+  if(!req.body.age && !req.body.type) {
     res.writeHead(400);
-    res.write(`Please try this format {age: 27, style: trad}`);
+    res.write(`Please try this format {age: 27, type: trad}`);
     res.end();
     return;
   }
-  console.log('server.js: ', climberProfile);
   //creating a new profile based on the parsed body from the post request
-  let climberProfile = new ProfileConstructor(req.body.age, req.body.style);
+  let climberProfile = new ProfileConstructor(req.body.age, req.body.type);
   //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
   climberPool[climberProfile.id] = climberProfile;
   //respond that we recieved the request
@@ -29,7 +28,8 @@ router.post(`/api/climberprofile`, (req, res)=>{
 });
 
 //creating route for Read/Get
-router.get(`/api/climberprofile`, (req, res) =>{
+router.get('/api/climberprofile', (req, res) =>{
+  console.log('server.js: hit the get req');
   if (!climberPool[req.url.query]) {
     res.writeHead(404);
     res.write(`No profile found with that id`);
@@ -51,7 +51,7 @@ router.get(`/api/climberprofile`, (req, res) =>{
 });
 
 //creating route for DELETE
-router.delete(`/api/climberprofile`, (req, res) =>{
+router.delete('/api/climberprofile', (req, res) =>{
   if (!climberPool[req.url.query]) {
     res.writeHead(404);
     res.write(`No profile was found with that id`);

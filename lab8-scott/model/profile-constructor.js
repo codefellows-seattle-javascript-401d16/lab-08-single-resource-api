@@ -1,10 +1,10 @@
 'use strict';
 
-const uuid = require('uuid');
+const uuid = require('uuid/');
 
 //start of my object constructor on POST requests
-module.exports = function(age, style) {
+module.exports = function(age, type) {
   this.id = uuid.v1();
   this.age = age;
-  this.style = style;
+  this.type = type;
 };
