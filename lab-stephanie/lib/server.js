@@ -5,6 +5,8 @@ const router = require('./router.js');
 const uuid = require('uuid');
 const FBPost = require('../model/model.js');
 
+const server = module.exports = http.createServer(router.route);
+
 var storage = {};
 
 router.get('/hello', (req, res) =>{
@@ -21,9 +23,9 @@ router.post('/api/posts', (req, res) => {
     return;
   }
 
-  let post = new FBPost('post',uuid());
-
-  storage[this.id] = post.id;
+  let post = new FBPost(req.body.userName, req.body.content);
+  console.log(post);
+  storage[post.id] = post;
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });
@@ -49,5 +51,3 @@ router.get('/api/posts', (req, res) =>{
   res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 });
-
-const server = module.exports = http.createServer(router.route);

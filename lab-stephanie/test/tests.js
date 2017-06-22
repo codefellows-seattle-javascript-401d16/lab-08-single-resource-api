@@ -5,8 +5,7 @@ const expect = require('expect');
 const FBPost = require('../model/model.js');
 const server = require('../lib/server.js');
 
-let friendPost = new FBPost('friendPost');
-
+let friendPost = new FBPost('friendPost', 'cat');
 describe('testing post routes', function() {
   before((done) => {
     server.listen(3000, () => done());
@@ -14,16 +13,18 @@ describe('testing post routes', function() {
   after((done) => {
     server.close(() => done());
   });
-
+  let testId;
   describe('testing POST /api/posts', () => {
     it('should respond with a post', (done) => {
       superagent.post('localhost:3000/api/posts')
-        .send({content: 'example data'})
+        .send({userName : 'stephanie', content: 'cat'})
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).toEqual(200);
           expect(res.body.id).toExist();
-          expect(res.body.content).toEqual('example data');
+          testId = res.body.id;
+          expect(res.body.userName).toEqual('stephanie');
+          expect(res.body.content).toEqual('cat');
           friendPost = res.body;
           done();
         });
@@ -41,12 +42,12 @@ describe('testing post routes', function() {
 
   describe('testing GET /api/posts', () => {
     it('should respond with a post', (done) => {
-      superagent.get(`localhost:3000/api/posts?id=${friendPost.id}`)
+      superagent.get(`localhost:3000/api/posts?id=${testId}`)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.status).toEqual(friendPost.id);
-          expect(res.body.id).toEqual('example data');
-          expect(res.body.content).toEqual('example data');
+          expect(res.status).toEqual(200);
+          expect(res.body.userName).toEqual('stephanie');
+          expect(res.body.content).toEqual('cat');
           friendPost = res.body;
           done();
         });

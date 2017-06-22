@@ -7,10 +7,11 @@ module.exports = (req, callback) => {
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
 
-  if(req.method === 'POST' || req.method === 'PUT') {
+  // parse the body
+  if(req.method === 'POST' || req.method === 'PUT'){
     let text = '';
     req.on('data', (buf) => {
-      text += buf.toString();
+      text  += buf.toString();
     });
 
     req.on('end', (err) => {
@@ -18,13 +19,13 @@ module.exports = (req, callback) => {
       try {
         req.body = JSON.parse(text);
         callback(null);
-      } catch (err) {
+      } catch (err){
         callback(err);
       }
     });
 
     req.on('err', (err) => {
-      req.body ={};
+      req.body = {};
       req.text = '';
       callback(err);
     });
