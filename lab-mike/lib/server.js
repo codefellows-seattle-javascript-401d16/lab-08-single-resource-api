@@ -32,7 +32,9 @@ router.get('/api/notes', (req, res) => {
     res.writeHead(200, {
       'Content-Type': 'application/json',
     });
-    res.write(JSON.stringify(storage));
+    // "deleted" keys still exist, but will return a 404 error
+    let storageKeys = Object.keys(storage);
+    res.write(JSON.stringify(storageKeys));
     res.end();
     return;
   }

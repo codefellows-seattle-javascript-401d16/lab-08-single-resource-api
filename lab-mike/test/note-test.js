@@ -62,7 +62,7 @@ describe('testing note paths', () => {
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(200);
-        expect(res.body[tempNote.id]['id']).toEqual(tempNote.id);
+        expect(res.body).toEqual(tempNote.id);
         done();
       });
     });
