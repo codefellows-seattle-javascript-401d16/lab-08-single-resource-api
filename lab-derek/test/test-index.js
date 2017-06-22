@@ -51,6 +51,7 @@ describe('testing task routes', () => {
       .end((err, res) => {
         expect(res.status).toEqual(400);
         expect(res.body).toEqual('bad request');
+        // expect(res.body)
         done();
       });
   });
