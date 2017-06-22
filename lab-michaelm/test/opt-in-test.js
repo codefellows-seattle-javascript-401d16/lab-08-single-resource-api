@@ -6,7 +6,7 @@ const expect = require('expect');
 const server = require('../lib/server.js');
 let tempNote;
 
-describe('testing note routes', function(){
+describe('testing opt-in routes', function(){
   before((done) => {
     server.listen(3000, () => done());
   });
@@ -14,22 +14,21 @@ describe('testing note routes', function(){
     server.close(() => done());
   });
 
-  describe('testing POST /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.post('localhost:3000/api/notes')
-      .send({content: 'example data'})
+  describe('testing POST /api/opt', () => {
+    it('should respond with mike', (done) => {
+      superagent.post('localhost:3000/api/opt?name=mike')
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(200);
         expect(res.body.id).toExist();
-        expect(res.body.content).toEqual('example data');
+        expect(res.body.name).toEqual('mike');
         tempNote = res.body;
         done();
       });
     });
 
     it('should respond with a 400 bad request', (done) => {
-      superagent.post('localhost:3000/api/notes')
+      superagent.post('localhost:3000/api/opt')
       .send({})
       .end((err, res) => {
         expect(res.status).toEqual(400);
@@ -38,14 +37,14 @@ describe('testing note routes', function(){
     });
   });
 
-  describe('testing GET /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.get(`localhost:3000/api/notes?id=${tempNote.id}`)
+  describe('testing GET /api/opt', () => {
+    it('should respond with mike', (done) => {
+      superagent.get(`localhost:3000/api/opt?id=${tempNote.id}`)
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(200);
         expect(res.body.id).toEqual(tempNote.id);
-        expect(res.body.content).toEqual('example data');
+        expect(res.body.content).toEqual('mike');
         tempNote = res.body;
         done();
       });

@@ -1,4 +1,6 @@
 'use strict';
 
 const server = require('./lib/server.js');
-server.listen(3000, () => console.log('server up 3000'));
+const port = process.env.PORT || 3000;
+
+server.listen(3000, () => console.log(`Server up on port:${port}`));
