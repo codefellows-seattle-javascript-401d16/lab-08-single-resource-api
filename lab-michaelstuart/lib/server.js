@@ -12,12 +12,12 @@ router.post('/api/user', (req, res) => {
   if (!name || !password || ! email) return headWrite(res, 400);
   const user = new User(name, password, email, uuid.v1());
   database[user.id] = user;
-  headWrite(res, 200, `user ${name} successfully added`);
+  headWrite(res, 201, JSON.stringify(user));
 });
 
 router.get('/api/user', (req, res) => {
   const id = req.url.query.id;
-  if (!database[id]) return headWrite(res, 404);
+  if (id && !database[id]) return headWrite(res, 404);
   const userList = (Object.keys(database) || []).map(v => v);
   headWrite(res, 200, JSON.stringify(id ? database[id] : userList));
 });
