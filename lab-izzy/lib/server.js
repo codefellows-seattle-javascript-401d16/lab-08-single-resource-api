@@ -1,17 +1,13 @@
 'use strict';
 
-// node modules
 const http = require('http');
 const router = require('./router.js');
 const Insta = require('../model/insta.js');
 
 let storage = {};
 
-// register routes with router
-
 router.post('/api/instas', (req, res) => {
   console.log('hit /api/instas');
-  // logic for POST /lulwat
   if(!req.body.content){
     res.write(400);
     res.end();
@@ -95,5 +91,4 @@ router.delete('/api/instas', (req, res) => {
   res.end();
 });
 
-// create server
 const server = module.exports = http.createServer(router.route);

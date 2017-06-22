@@ -114,7 +114,7 @@ describe('testing insta routes', () => {
 
     describe('testing for routes that have not been registered', () => {
       it('should return a 404', (done) => {
-        superagent.get('localhost:3000/this/is/slugggy')
+        superagent.get('localhost:3000/this/is/slugsy')
           .end((err) => {
             expect(err.status).toEqual(404);
             done();
