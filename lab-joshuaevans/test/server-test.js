@@ -13,7 +13,6 @@ describe('testing http methods', () => {
     server.close(() => done());
   });
 
-  let tempId = uuid.v4();
   let tempRecord;
 
   describe('testing POST method', () => {

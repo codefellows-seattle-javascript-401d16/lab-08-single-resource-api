@@ -29,6 +29,7 @@ router.post('/api/records', (req, res) => {
 router.get('/api/records', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
+    res.write(JSON.stringify(storage));
     res.end();
     return ;
   }
@@ -82,9 +83,7 @@ router.delete('/api/records', (req, res) => {
     res.end();
     return;
   }
-  console.log(storage[req.url.query.id]);
   delete storage[req.url.query.id];
-  console.log(storage[req.url.query.id]);
 
   res.writeHead(204, {
     'Content-Type': 'application/json',
