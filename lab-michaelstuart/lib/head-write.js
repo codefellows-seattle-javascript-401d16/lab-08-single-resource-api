@@ -1,5 +1,7 @@
-module.exports = (res, code, display = null, text) => {
-  res.writeHead(code, display);
-  display && res.write(text);
+'use strict';
+
+module.exports = (res, code, text) => {
+  res.writeHead(code, { 'Content-Type': 'text/plain' });
+  text && res.write(text);
   res.end();
 };
