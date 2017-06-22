@@ -9,7 +9,7 @@ const Task = require('../model/task.js');
 
 //TODO*DONE: Create a storage module that will store resources by their type and id
 
-let storage = {};
+let storage = [];
 
 //TODO*DONE: POST request - pass data as stringifed json in the body of a post request to create a resource
 
