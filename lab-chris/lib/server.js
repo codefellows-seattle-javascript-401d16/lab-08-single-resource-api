@@ -2,40 +2,31 @@
 
 const http = require('http');
 const router = require('./router.js');
-const uuid = require('uuid');
+const Player = require('../model/player.js');
 
 var storage = {};
 
-router.get('/hello', (req, res) => {
-  res.write('world');
-  res.end();
-});
-
-router.post('/api/notes', (req, res) => {
-  if(!req.body.content){
-    res.write(400);
+router.post('/api/player', (req, res) => {
+  if(!req.body.name){
+    res.writeHead(400);
     res.end();
     return;
   }
 
-  let note = {
-    id: uuid.v1(),
-    content: req.body.content,
-  };
-
-  storage[note.id] = note;
+  let newPlayer = new Player(req.body.name,req.body.team,req.body.position);
+  storage[newPlayer.id] = newPlayer;
   res.writeHead(201, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(note));
+  res.write(JSON.stringify(newPlayer));
   res.end();
 });
 
-router.get('/api/notes', (req, res) => {
+router.get('/api/player', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.end();
-    return ;
+    return;
   }
 
   if(!storage[req.url.query.id]){
@@ -53,44 +44,53 @@ router.get('/api/notes', (req, res) => {
 
 });
 
-router.put('/api/notes', (req, res) => {
-  if(!req.body.content){
-    res.write(400);
-    res.end();
-    return;
-  }
-
-  let note = {
-    id: req.body.id,
-    content: req.body.content,
-  };
-
-  storage[note.id] = note;
-  res.writeHead(202, {
-    'Content-Type': 'application/json',
-  });
-  res.write(JSON.stringify(note));
-  res.end();
-});
-
-router.delete('/api/notes', (req, res) => {
+router.put('/api/player', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.end();
-    return ;
+    return;
   }
 
   if(!storage[req.url.query.id]){
     res.writeHead(404);
     res.end();
-    return ;
+    return;
   }
 
-  res.writeHead(200, {});
+  if (req.body.name) {
+    storage[req.url.query.id].title = req.body.name;
+  }
+
+  if (req.body.team) {
+    storage[req.url.query.id].artist = req.body.team;
+  }
+
+  if (req.body.position) {
+    storage[req.url.query.id].artist = req.body.position;
+  }
+
+  res.writeHead(202, {
+    'Content-Type': 'application/json',
+  });
 
   res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
+});
 
+router.delete('/api/player', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(404);
+    res.end();
+    return;
+  }
+  delete storage[req.url.query.id];
+
+  res.writeHead(204, {
+    'Content-Type': 'application/json',
+  });
+
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
 });
 
 const server = module.exports = http.createServer(router.route);

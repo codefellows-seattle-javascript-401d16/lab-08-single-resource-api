@@ -2,35 +2,34 @@
 
 const superagent = require('superagent');
 const expect = require('expect');
-
+// const uuid = require('uuid');
 const server = require('../lib/server.js');
-let tempNote;
+let tempPlayer;
 
-describe('testing note routes', function(){
+describe('testing player routes', function(){
   before((done) => {
     server.listen(3000, () => done());
   });
-
   after((done) => {
     server.close(() => done());
   });
 
-  describe('testing POST /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.post('localhost:3000/api/notes')
-      .send({content: 'example data'})
+  describe('testing POST /api/player', () => {
+    it('should respond with a new player', (done) => {
+      superagent.post('localhost:3000/api/player')
+      .send({name: 'Messi', team: 'Barcelona', position: 'GOAT'})
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(201);
         expect(res.body.id).toExist();
-        expect(res.body.content).toEqual('example data');
-        tempNote = res.body;
+        expect(res.body.name).toEqual('Messi');
+        tempPlayer = res.body;
         done();
       });
     });
 
     it('should respond with a 400 bad request', (done) => {
-      superagent.post('localhost:3000/api/notes')
+      superagent.post('localhost:3000/api/player')
       .send({})
       .end((err, res) => {
         expect(res.status).toEqual(400);
@@ -39,21 +38,21 @@ describe('testing note routes', function(){
     });
   });
 
-  describe('testing GET /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.get(`localhost:3000/api/notes?id=${tempNote.id}`)
+  describe('testing GET /api/soccer', () => {
+    it('should respond with a 200', (done) => {
+      superagent.get(`localhost:3000/api/player?id=${tempPlayer.id}`)
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(200);
-        expect(res.body.id).toEqual(tempNote.id);
-        expect(res.body.content).toEqual('example data');
-        tempNote = res.body;
+        expect(res.body.id).toEqual(tempPlayer.id);
+        tempPlayer = res.body;
         done();
       });
     });
 
     it('should respond with a 404', (done) => {
-      superagent.get(`localhost:3000/api/notes?id=7`)
+      superagent.get(`localhost:3000/api/player?id=broke`)
+      .send({})
       .end((err, res) => {
         expect(res.status).toEqual(404);
         done();
@@ -61,30 +60,7 @@ describe('testing note routes', function(){
     });
 
     it('should respond with a 400', (done) => {
-      superagent.get(`localhost:3000/api/notes`)
-      .end((err, res) => {
-        expect(res.status).toEqual(400);
-        done();
-      });
-    });
-  });
-
-  describe('testing PUT /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.put('localhost:3000/api/notes')
-      .send({id: 7, content: 'New data'})
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).toEqual(202);
-        expect(res.body.id).toEqual(7);
-        expect(res.body.content).toEqual('New data');
-        tempNote = res.body;
-        done();
-      });
-    });
-
-    it('should respond with a 400 bad request', (done) => {
-      superagent.put('localhost:3000/api/notes')
+      superagent.get(`localhost:3000/api/player?id=`)
       .send({})
       .end((err, res) => {
         expect(res.status).toEqual(400);
@@ -93,21 +69,43 @@ describe('testing note routes', function(){
     });
   });
 
-  describe('testing DELETE /api/notes', () => {
-    it('should respond with a note', (done) => {
-      superagent.delete(`localhost:3000/api/notes?id=${tempNote.id}`)
+  describe('testing PUT /api/player', () => {
+    it('should respond with a 202', (done) => {
+      superagent.put(`localhost:3000/api/player?id=${tempPlayer.id}`)
+      .send({name: 'Messi', team: 'Barcelona', position: 'GOAT'})
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.status).toEqual(200);
-        expect(tempNote.id).toEqual(7);
-        expect(tempNote.content).toEqual('New data');
-        tempNote = res.body;
+        expect(res.status).toEqual(202);
+        expect(res.body.id).toExist();
+        expect(res.body.name).toEqual('Messi');
+        tempPlayer = res.body;
+        done();
+      });
+    });
+
+    it('should respond with a 400 bad request', (done) => {
+      superagent.put(`localhost:3000/api/player`)
+      .send({})
+      .end((err, res) => {
+        expect(res.status).toEqual(400);
+        done();
+      });
+    });
+  });
+
+  describe('testing DELETE /api/player', () => {
+    it('should respond with a 204', (done) => {
+      superagent.delete(`localhost:3000/api/player?id=${tempPlayer.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(204);
         done();
       });
     });
 
     it('should respond with a 404', (done) => {
-      superagent.delete(`localhost:3000/api/notes?id=wut`)
+      superagent.delete(`localhost:3000/api/player?i`)
+      .send({id: 777})
       .end((err, res) => {
         expect(res.status).toEqual(404);
         done();
