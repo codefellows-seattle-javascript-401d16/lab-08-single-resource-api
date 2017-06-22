@@ -5,6 +5,7 @@ const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
 
+
 var storage = {};
 
 // npm modules
@@ -13,44 +14,92 @@ var storage = {};
 // register routes with router
 router.get('/hello', (req, res) => {
   res.write('yeyehheey');
-
   res.end();
 });
 
+function User(title, content) {
+  this.id = uuid.v1();
+  this.title = title;
+  this.content = content;
+  this.date= new Date();
+}
+
+
 router.post('/newUser', (req, res) => {
-  // logic for POSTing new User
-  if(!req.body.content){
+  if(!req.body){ // if(!req.body.content){
     res.writeHead(400);
     res.end();
     return;
   }
 
-  let user = new User(req.body.content);
-  storage[user.id] = user;
+  let user = new User(req.body.title, req.body.content);
+  storage[user.title] = user;// storage[user.id] = user;
   console.log(req.body);
   console.log(req.url);
+  console.log(storage);
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(user));
-  console.log(storage);
+  res.write('Your content has been saved into storage!!');
+  res.write(JSON.stringify(user))
   res.end();
 });
 
-function User(content) {
-  this.id = uuid.v1();
-  this.content = content;
-}
+router.get('/readTitles', (req, res) => {
+  console.log(storage);
+  if(!req.body){ // if(!req.body.content){ why is this... need to check
+    res.writeHead(400);
+    res.end();
+    return;
+  }
+  console.log(storage);
+  let titleInfo = [];
+  for (var i=0; i< storage.length; i++){
+    if (req.body.title===Object.keys(storage)[i]) {
+      console.log('almost!!!');
+      titleInfo.push(storage.title[i]);
+    } else {console.log('almost!!');}
+  }
+  if (titleInfo===[]) {
+    res.write('these are all of the titles that matched your request...\n'+JSON.stringify(titleInfo));
+  } else {
+    res.write('no user with that information!!');
+  }
+  res.end();
+});
+
+router.delete('/deleteTitle', (req,res) => {
+  console.log(storage);
+  if(!req.body){ // if(!req.body.content){
+    res.writeHead(400);
+    res.end();
+    return;
+  }
+  for (var i=0; i< storage.length; i++){
+    if (req.body.title===storage.title[i]) {
+      titleInfo.push(storage.title[i]);
+    }
+  }
+
+
+})
 
 
 
 router.get('/newSoup', (req, res) => {
   let user = new User();
-  storage[user] = users;
+  storage[users] = user;
   res.write('hello new user! Your new profile has been created! It is below... :)');
-  res.write(users);
+  res.write(user);
   res.end();
 });
+
+
+
+
+
+
+
 
 router.get('/api/notes', (req, res) => {
   if(!req.url.query.id){
@@ -61,7 +110,7 @@ router.get('/api/notes', (req, res) => {
 
   if(!storage[req.url.query.id]){
     res.writeHead(404)
-    res.write('suhh dude')
+    console.log('suhh dude');
     res.end();
     return ;
   }
