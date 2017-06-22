@@ -15,7 +15,6 @@ router.get('/hello', (req, res) =>{
 });
 
 router.post('/api/posts', (req, res) => {
-  console.log('hit /api/posts');
 
   if(!req.body.content) {
     res.write(400);
@@ -24,12 +23,35 @@ router.post('/api/posts', (req, res) => {
   }
 
   let post = new FBPost(req.body.userName, req.body.content);
-  console.log(post);
   storage[post.id] = post;
-  res.writeHead(200, {
+  res.writeHead(201, {
     'Content-Type' : 'application/json',
   });
   res.write(JSON.stringify(post));
+  res.end();
+});
+
+router.put('/api/posts', (req, res) => {
+
+  if(!req.body.userName) {
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  if(!req.body.content) {
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  if (req.body.content) storage[req.url.query.id].content = req.body.content;
+  if (req.body.userName) storage[req.url.query.id].userName = req.body.userName;
+
+  res.writeHead(202, {
+    'Content-Type' : 'application/json',
+  });
+  res.write(JSON.stringify(req.body.id));
   res.end();
 });
 
@@ -49,5 +71,19 @@ router.get('/api/posts', (req, res) =>{
   });
 
   res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
+});
+
+router.delete('/api/posts', (req, res) =>{
+  if(!storage[req.url.query.id]) {
+    res.writeHead(404);
+    res.end();
+    return;
+  }
+  res.writeHead(204, {
+    'Content-Type' : 'application/json',
+  });
+
+  delete storage[req.url.query.id];
   res.end();
 });
