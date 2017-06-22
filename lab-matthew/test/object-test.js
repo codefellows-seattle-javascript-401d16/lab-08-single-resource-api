@@ -54,6 +54,7 @@ describe('testing character routes', function(){
     });
   });
 
+
   describe('Testing GET /api/characters', () => {
     it('should respond with a character and a 200 status', (done) => {
       superagent.get(`localhost:3000/api/characters?id=${tempHero.id}`)
