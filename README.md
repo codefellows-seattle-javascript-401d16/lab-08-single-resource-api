@@ -11,22 +11,22 @@
 
 # Build Tool Instructions
 * create a package.json that lists all dependencies and developer dependencies
-* include an .eslintrc
-* include a .gitignore
-* include a readme with project description
-* include any npm scripts for starting server, linting, testing, etc
+* include an .eslintrc-DONE
+* include a .gitignore-DONE
+* include a readme with project description - DONE-description needs to be added...
+* include any npm scripts for starting server, linting, testing, etc-
 
 # Directions
 * Create these directories to organize your code:
- * lib
- * model
- * test
-* Create a HTTP Server using the http module
-* Create a Object Constructor that creates a _simple resource_ with at least 3 properties
- * An `id` property that is set to a unique **node-uuid** id is required
+ * lib-DONE
+ * model-DONE
+ * test-DONE
+* Create a HTTP Server using the http module- ....
+* Create a Object Constructor that creates a _simple resource_ with at least 3 properties-DONE
+ * An `id` property that is set to a unique **node-uuid** id is required-DONE
  * Also include two other properties of your choice (like name, creationDate, etc.)
 * Create a body parser to parse the json in the body of `POST` and `PUT` requests
-* Create a url parser that uses nodes `url` and `querystring` modules parse the request url
+* Create a url parser that uses nodes `url` and `querystring` modules parse the request url-DONE
 * Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests
 * Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_
 * Create a storage module that will store resources by their type and id
@@ -63,4 +63,3 @@
 ## Bonus
 * **2pts** a `GET` request to `/api/simple-resource-name` with no **?id=** should return an **array** of all of the ids for that resource
   * if you do this you dont have to test 400 to `GET /api/simple-resource-name`
-
