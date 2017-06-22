@@ -34,10 +34,10 @@ router.post('/api/seahawks', (req, res) => {
 router.get('/api/seahawks', (req, res) => {
   if(!req.url.query.id) {
     res.writeHead(200, {
-      'Content-Type': 'text/plain',
+      'Content-Type': 'application/json',
     });
     res.write(JSON.stringify(team.players));
-    res.write('ID does not exist, responding with all data!');
+    res.write('No ID, responding with all data!');
     res.end();
     return;
   }
