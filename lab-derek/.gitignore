@@ -1,4 +1,4 @@
-# Created by https://www.gitignore.io/api/osx,linux,node,vim
+# Created by https://www.gitignore.io/api/tasks/osx,linux,node,vim
 
 db/
 build/
@@ -42,7 +42,7 @@ coverage
 # node-waf configuration
 .lock-wscript
 
-# Compiled binary addons (http://nodejs.org/api/addons.html)
+# Compiled binary addons (http://nodejs.org/api/tasks/addons.html)
 build/Release
 
 # Dependency directories
