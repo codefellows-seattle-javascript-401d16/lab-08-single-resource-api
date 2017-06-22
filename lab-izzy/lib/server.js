@@ -53,31 +53,24 @@ router.get('/api/instas', (req, res) => {
 
 router.put('/api/instas', (req, res) => {
   if(!req.body.content) {
-    console.log('no body provided or invalid body');
     res.writeHead(400);
     res.end();
     return;
   }
   if(!req.url.query.id) {
-    console.log('no id');
     res.writeHead(400);
     res.end();
     return;
   }
   if(!storage[req.url.query.id]) {
-    console.log('not found');
     res.writeHead(404);
     res.end();
     return;
   }
 
-  console.log(storage[req.url.query.id]);
-
   if (req.body.content) storage[req.url.query.id].content = req.body.content;
 
   if (req.body.image) storage[req.url.query.id].image = req.body.image;
-
-  console.log(storage[req.url.query.id]);
 
   res.writeHead(200, {
     'Content-Type': 'application/json',
@@ -88,8 +81,18 @@ router.put('/api/instas', (req, res) => {
 
 router.delete('/api/instas', (req, res) => {
   if(!req.url.query.id) {
-    res.writeHead(204);
+    res.writeHead(404);
+    res.end();
+    return;
   }
+
+  delete storage[req.url.query.id].content;
+
+  res.writeHead(204, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
 });
 
 // create server

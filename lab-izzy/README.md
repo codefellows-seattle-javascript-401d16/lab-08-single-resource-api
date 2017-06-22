@@ -1,2 +1,3 @@
 # Single Resource API
-\n 
+\n
+# Created a lib, model, and test directory to organize code.
