@@ -4,22 +4,16 @@
 const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
-
 const Character = require('../model/character.js');
 const storage = require('../model/storage.js');
 
-// var storage = {};
-
-
-// npm modules
-// app modules
-// module logic
 
 router.post('/api/characters', (req, res) => {
-  console.log('hit /api/characters');
   let body = req.body;
   if(!body || !body.name || !body.species || !body.profession || !body.power){
-    res.write(400);
+    res.write(400, {
+      'Content-Type' : 'application/json',
+    });
     res.end();
     return;
   }
@@ -32,8 +26,8 @@ router.post('/api/characters', (req, res) => {
     'Content-Type' : 'application/json',
   });
   res.write(JSON.stringify(hero));
-  // res.write(JSON.stringify(storage));
   res.end();
+  return;
 });
 
 router.get('/api/characters', (req, res) => {
@@ -61,10 +55,46 @@ router.get('/api/characters', (req, res) => {
     'Content-Type': 'application/json',
   });
 
-
   res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 
+});
+
+router.put('/api/characters', (req, res) => {
+  // console.log('hit /api/characters');
+  let body = req.body;
+  if(!body || !body.name || !body.species || !body.profession || !body.power){
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  res.writeHead(202, {
+    'Content-Type' : 'application/json',
+  });
+  storage[req.url.query.id].name = req.body.name;
+  storage[req.url.query.id].species = req.body.species;
+  storage[req.url.query.id].profession = req.body.profession;
+  storage[req.url.query.id].power = req.body.power;
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
+});
+
+router.delete('/api/characters', (req, res) => {
+
+  if(!storage[req.url.query.id]){
+    res.writeHead(404, {
+      'Content-Type' : 'application/json',
+    });
+    res.end();
+    return;
+  }
+  delete storage[req.url.query.id];
+  res.writeHead(204, {
+    'Content-Type' : 'application/json',
+  });
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
 });
 
 // create server

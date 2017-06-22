@@ -29,7 +29,7 @@ describe('testing character routes', function(){
   });
 
   describe('Testing POST /api/characters', () => {
-    it('should respond with a character', (done) => {
+    it('should respond with a character and 201', (done) => {
       superagent.post('localhost:3000/api/characters')
       .send(JSON.stringify({name : 'Matthew', species : 'Lion', profession : 'Shepherd', power : 'Gravity'}))
       .end((err, res) => {
@@ -44,10 +44,18 @@ describe('testing character routes', function(){
         done();
       });
     });
+    it('should respond with a 400 bad request', (done) => {
+      superagent.post('localhost:3000/api/characters')
+      .send({})
+      .end((err, res) => {
+        expect(res.status).toEqual(400);
+        done();
+      });
+    });
   });
 
   describe('Testing GET /api/characters', () => {
-    it('should respond with a character', (done) => {
+    it('should respond with a character and a 200 status', (done) => {
       superagent.get(`localhost:3000/api/characters?id=${tempHero.id}`)
       .end((err, res) => {
         if (err) return done(err);
@@ -61,51 +69,57 @@ describe('testing character routes', function(){
         done();
       });
     });
+    it('should respond with a 400 status', (done) => {
+      superagent.get(`localhost:3000/api/characters`)
+      .end((err, res) => {
+        expect(res.status).toEqual(400);
+        done();
+      });
+    });
+    it('should respond with a 404 status', (done) => {
+      superagent.get(`localhost:3000/api/characters?id=ac2345-23f`)
+      .end((err, res) => {
+        expect(res.status).toEqual(404);
+        done();
+      });
+    });
   });
 
-  //   it('should respond with a 400 bad request', (done) => {
-  //     superagent.post('localhost:3000/api/notes')
-  //     .send({})
-  //     .end((err, res) => {
-  //       expect(res.status).toEqual(400);
-  //       done();
-  //     });
-  //   });
-  // });
+  describe('Testing PUT /api/characters', () => {
+    it('should respond with a 202 status', (done) => {
+      superagent.put(`localhost:3000/api/characters?id=${tempHero.id}`)
+      .send(JSON.stringify({name : 'Matthew', species : 'Lion', profession : 'Shepherd', power : 'Flight'}))
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(202);
+        done();
+      });
+    });
+    it('should respond with a 400 status', (done) => {
+      superagent.put(`localhost:3000/api/characters?id=${tempHero.id}`)
+      .send({})
+      .end((err, res) => {
+        expect(res.status).toEqual(400);
+        done();
+      });
+    });
+  });
 
-  // describe('testing POST /api/notes', () => {
-  //   it('should respond with a note', (done) => {
-  //     superagent.post('localhost:3000/api/notes')
-  //     .send({content: 'example data'})
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.status).toEqual(200);
-  //       expect(res.body.id).toExist();
-  //       expect(res.body.content).toEqual('example data');
-  //       tempNote = res.body;
-  //       done();
-  //     });
-  //   });
-  //
-  //   it('should respond with a 400 bad request', (done) => {
-  //     superagent.post('localhost:3000/api/notes')
-  //     .send({})
-  //     .end((err, res) => {
-  //       expect(res.status).toEqual(400);
-  //       done();
-  //     });
-  //   });
-  // });
-
-  // describe('testing GET /api/notes', () => {
-  //   it('should respond with a note', (done) => {
-  //     superagent.get(`localhost:3000/api/notes?id=${tempNote.id}`)
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.status).toEqual(200);
-  //       expect(res.body.id).toEqual(tempNote.id);
-  //       expect(res.body.content).toEqual('example data');
-  //       tempNote = res.body;
-  //       done();
-  //     });
+  describe('Testing DELETE /api/characters', () => {
+    it('should delete character resource and return 204', (done) => {
+      superagent.delete(`localhost:3000/api/characters?id=${tempHero.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(204);
+        done();
+      });
+    });
+    it('should return 404 status', (done) => {
+      superagent.delete(`localhost:3000/api/characters?id=23iu4fj2-239f`)
+      .end((err, res) => {
+        expect(res.status).toEqual(404);
+        done();
+      });
+    });
+  });
 });
