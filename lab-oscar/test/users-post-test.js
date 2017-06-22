@@ -44,4 +44,23 @@ describe('testing users routes', () =>{
     });
   });
 
+  describe('testing DELETE /api/user', () =>{
+    it('should delete the specify user', (done) => {
+      superagent.delete(`localhost:3000/api/user?id=${tempUser.id}`)
+        .end((err, res) => {
+          if(err) return done(err);
+          console.log('stops');
+          expect(res.status).toEqual(204);
+          expect(res.body.id).toEqual(undefined);
+          done();
+        });
+    });
+    it('should respond with 404', (done) => {
+      superagent.delete('localhost:3000/api/user?id=234324234')
+        .end((err, res) => {
+          if(err) return done(err);
+          expect(res.status).toEqual(404);
+        });
+    });
+  });
 });

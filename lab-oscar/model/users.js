@@ -48,6 +48,21 @@ router.get('/api/user', (req, res) =>{
   res.end();
 });
 
+router.delete('/api/user', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(400);
+    res.end();
+    return;
+  }
+  storage[req.url.query.id] = undefined;
+
+  if(!storage[req.url.query.id]){
+    res.writeHead(204);
+    res.end();
+    return;
+  }
+
+});
 
 router.get('/hello', (req, res) => {
   res.write('Hello!');
