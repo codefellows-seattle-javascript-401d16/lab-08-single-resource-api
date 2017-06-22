@@ -18,18 +18,18 @@
 
 # Directions
 * Create these directories to organize your code:
- * lib
- * model
- * test
-* Create a HTTP Server using the http module
-* Create a Object Constructor that creates a _simple resource_ with at least 3 properties
- * An `id` property that is set to a unique **node-uuid** id is required
- * Also include two other properties of your choice (like name, creationDate, etc.)
-* Create a body parser to parse the json in the body of `POST` and `PUT` requests
-* Create a url parser that uses nodes `url` and `querystring` modules parse the request url
-* Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests
-* Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_
-* Create a storage module that will store resources by their type and id
+ <!-- * lib done -->
+ <!-- * model done -->
+ <!-- * test done -->
+<!-- * Create a HTTP Server using the http module done -->
+<!-- * Create a Object Constructor that creates a _simple resource_ with at least 3 properties done -->
+ <!-- * An `id` property that is set to a unique **node-uuid** id is required done -->
+ <!-- * Also include two other properties of your choice (like name, creationDate, etc.) done -->
+<!-- * Create a body parser to parse the json in the body of `POST` and `PUT` requests done -->
+<!-- * Create a url parser that uses nodes `url` and `querystring` modules parse the request url done -->
+<!-- * Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests done -->
+<!-- * Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_  done -->
+<!-- * Create a storage module that will store resources by their type and id done -->
 
 ## Server Endpoints
 ### `/api/simple-resource-name`
@@ -63,4 +63,3 @@
 ## Bonus
 * **2pts** a `GET` request to `/api/simple-resource-name` with no **?id=** should return an **array** of all of the ids for that resource
   * if you do this you dont have to test 400 to `GET /api/simple-resource-name`
-
