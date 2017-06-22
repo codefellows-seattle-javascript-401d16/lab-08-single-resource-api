@@ -1,5 +1,4 @@
 'use strict';
-'use strict';
 
 const requestParse = require('./request-parse.js');
 
@@ -32,12 +31,13 @@ router.put = (pathname, callback) => {
 router.route = (req, res) => {
 
   requestParse(req, (err) => {
+
     if(err){
       res.writeHead(400);
       res.end();
       return;
     }
-    // if there is a callback for the requset invokeit
+
     let routeHandler = routes[req.method][req.url.pathname];
 
     if(routeHandler){
