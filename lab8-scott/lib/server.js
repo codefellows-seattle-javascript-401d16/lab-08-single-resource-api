@@ -14,6 +14,7 @@ router.post(`/api/climberprofile`, (req, res)=>{
     res.end();
     return;
   }
+  console.log('server.js: ', climberProfile);
   //creating a new profile based on the parsed body from the post request
   let climberProfile = new ProfileConstructor(req.body.age, req.body.style);
   //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
@@ -94,6 +95,4 @@ router.get(`/api/climberprofile`, (req, res) =>{
 
 
 
-const server = module.exports = http.createServer((req, res) =>{
-
-});
+const server = module.exports = http.createServer(router.route);
