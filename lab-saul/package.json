@@ -1,0 +1,23 @@
+{
+  "name": "lab-saul",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js"
+  },
+  "author": "saul",
+  "license": "ISC",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "express": "^4.15.3",
+    "mocha": "^3.4.2"
+  },
+  "dependencies": {
+    "uuid": "^3.1.0"
+  }
+}
