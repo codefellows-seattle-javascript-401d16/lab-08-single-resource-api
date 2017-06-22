@@ -30,7 +30,13 @@ router.route = (req, res) => {
       res.writeHead(400);
       res.end();
       return;
-    } else {
+    }
+
+    let routeHandler = routes[req.method][req.url.pathname];
+
+    if(routeHandler){
+      routeHandler(req, res);
+    }else {
       res.writeHead(404);
       res.end();
     }

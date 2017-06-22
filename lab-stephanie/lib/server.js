@@ -3,7 +3,7 @@
 const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
-const Post = require('model.js');
+const FBPost = require('../model/model.js');
 
 var storage = {};
 
@@ -21,9 +21,9 @@ router.post('/api/posts', (req, res) => {
     return;
   }
 
-  let post = new Post('post');
+  let post = new FBPost('post',uuid());
 
-  storage[this.id] = post;
+  storage[this.id] = post.id;
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });

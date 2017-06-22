@@ -1,11 +1,11 @@
 'use strict';
 
-const superagent = require('supergent');
+const superagent = require('superagent');
 const expect = require('expect');
-const Post = require('model.js');
+const FBPost = require('../model/model.js');
 const server = require('../lib/server.js');
 
-let tempPost = new Post('tempPost');
+let friendPost = new FBPost('friendPost');
 
 describe('testing post routes', function() {
   before((done) => {
@@ -24,7 +24,7 @@ describe('testing post routes', function() {
           expect(res.status).toEqual(200);
           expect(res.body.id).toExist();
           expect(res.body.content).toEqual('example data');
-          tempPost = res.body;
+          friendPost = res.body;
           done();
         });
     });
@@ -41,13 +41,13 @@ describe('testing post routes', function() {
 
   describe('testing GET /api/posts', () => {
     it('should respond with a post', (done) => {
-      superagent.get('localhost:3000/api/posts?id=${tempPost.id}')
+      superagent.get(`localhost:3000/api/posts?id=${friendPost.id}`)
         .end((err, res) => {
           if (err) return done(err);
-          expect(res.status).toEqual(tempPost.id);
+          expect(res.status).toEqual(friendPost.id);
           expect(res.body.id).toEqual('example data');
           expect(res.body.content).toEqual('example data');
-          tempPost = res.body;
+          friendPost = res.body;
           done();
         });
     });

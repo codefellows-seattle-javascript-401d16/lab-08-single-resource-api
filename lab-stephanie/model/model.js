@@ -2,10 +2,8 @@
 
 const uuid = require('uuid');
 
-const model = module.exports = {};
-
-model.Post = function(userName) {
+module.exports = function(userName, content) {
   this.userName = userName;
   this.id = uuid.v1();
-  this.content = req.body.content;
+  this.content = content;
 };
