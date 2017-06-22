@@ -65,9 +65,9 @@ describe('testing note routes', function(){
         expect(res.status).toEqual(404)
         expect(res.body.id).toEqual(tempNote.id)
         expect(res.body.content).toEqual('not found')
-      tempNote = res.body;
-      done()
+        tempNote = res.body;
+        done()
     })
   });
-})
+  })
 })
