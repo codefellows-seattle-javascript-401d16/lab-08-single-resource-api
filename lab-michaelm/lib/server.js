@@ -54,4 +54,28 @@ router.get('/api/opt', (req, res) => {
   res.end();
 });
 
+router.delete('/api/opt', (req, res) => {
+  if(!req.url.query.id) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Bad request: No id provided.');
+    res.end();
+    return;
+  }
+  if(!storage[req.url.query.id]) {
+    res.writeHead(404, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('id not found.');
+    res.end();
+    return;
+  }
+  res.writeHead(204, {
+    'Content-Type': 'text/plain',
+  });
+  res.end();
+  return;
+});
+
 module.exports = http.createServer(router.route);
