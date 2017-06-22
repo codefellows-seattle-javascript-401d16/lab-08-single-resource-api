@@ -34,12 +34,20 @@ router.post('/api/posts', (req, res) => {
 router.put('/api/posts', (req, res) => {
 
   if(!req.body.userName) {
+    console.log('400 running on put userName');
     res.write(400);
     res.end();
     return;
   }
 
   if(!req.body.content) {
+
+    res.write(400);
+    res.end();
+    return;
+  }
+  if(!req.url.query.id) {
+
     res.write(400);
     res.end();
     return;
@@ -51,7 +59,8 @@ router.put('/api/posts', (req, res) => {
   res.writeHead(202, {
     'Content-Type' : 'application/json',
   });
-  res.write(JSON.stringify(req.body.id));
+
+  res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 });
 

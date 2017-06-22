@@ -46,6 +46,8 @@ describe('testing post routes', function() {
       superagent.put(`localhost:3000/api/posts?id=${testId}`)
         .send({userName : 'sally', content: 'dog'})
         .end((err, res) => {
+          console.log('error', err);
+          
           if (err) return done(err);
           expect(res.status).toEqual(202);
           expect(res.body.userName).toEqual('sally');
