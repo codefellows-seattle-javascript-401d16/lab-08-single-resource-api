@@ -1,23 +1,13 @@
 'use strict';
 
-// node modules
 const http = require('http');
 const router = require('./router.js');
-const uuid = require('uuid');
+const Movie = require('../model/movies.js');
+const storage = require('../model/storage.js');
 
-var storage = {};
 
-// npm modules
-// app modules
-// module logic
-// register routes with router
-router.get('/hello', (req, res) => {
-  res.write('yeyyeyeyye');
-  res.end();
-});
-
-router.post('/api/notes', (req, res) => {
-  console.log('hit /api/notes');
+router.post('/api/movies', (req, res) => {
+  console.log('hit /api/movies');
   // logic for POST /lulwat
   if(!req.body.content){
     res.write(400);
@@ -25,21 +15,16 @@ router.post('/api/notes', (req, res) => {
     return;
   }
 
-  // uuid  genorate a random string that will not likely conflict with a future random string
-  let note = {
-    id: uuid.v1(),
-    content: req.body.content,
-  };
-
-  storage[note.id] = note;
-  res.writeHead(200, {
+  let newMovie = new Movie(req.body.title, req.body.year, req.body.genre);
+  storage[newMovie.id] = newMovie;
+  res.writeHead(201, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(note));
+  res.write(JSON.stringify(newMovie));
   res.end();
 });
 
-router.get('/api/notes', (req, res) => {
+router.get('/api/movies', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.end();
@@ -52,20 +37,47 @@ router.get('/api/notes', (req, res) => {
     return ;
   }
 
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-
-  res.write(JSON.stringify(storage[req.url.query.id]));
-  res.end();
-
+  if(req.url.query.id) {
+    res.writeHead(200, {
+      'Content-Type': 'application/json',
+    });
+    res.write(JSON.stringify(storage[req.url.query.id]));
+    res.end();
+  }
 });
 
-// create server
+router.put('/api/movies', (req, res) => {
+  console.log('hit /api/movies');
+  if(!req.body.content){
+    res.write(400);
+    res.end();
+    return;
+  }
+  res.writeHead(202, {
+    'Content-Type': 'application/json',
+  });
+  storage[req.url.query.id].title = req.body.title;
+  storage[req.url.query.id].year = req.body.year;
+  storage[req.url.query.id].genre = req.body.genre;
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
+});
+
+router.delete('api/movies', (req,res) => {
+  if(!storage[req.url.query.id]){
+    res.writeHead(404, {
+      'Content-Type': 'application/json',
+    });
+    res.end();
+    return;
+  }
+  delete storage[req.url.query.id];
+  res.writeHead(204, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end;
+});
+
+
 const server = module.exports = http.createServer(router.route);
-
-
-// how we did it first
-//http.createServer((req, res) => {
-  //router.route(req,res)
-//})
