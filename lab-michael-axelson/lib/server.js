@@ -8,15 +8,6 @@ const uuid = require('uuid');
 
 var storage = {};
 
-// npm modules
-// app modules
-// module logic
-// register routes with router
-router.get('/hello', (req, res) => {
-  res.write('yeyehheey');
-  res.end();
-});
-
 function User(title, content) {
   this.id = uuid.v1();
   this.title = title;
@@ -83,7 +74,7 @@ router.delete('/deleteUser', (req,res) => {
   res.write(JSON.stringify(Object.keys(storage)[0]));
   let numDeleted = 0;
   for (var i=0; i< storage.length; i++){
-    if (req.body.title===Object.keys(storage)[i]) {
+    if (req.body.title===storage[req.body.title[i]]) {
       delete storage[storage.title[i]];
       numDeleted+=1;
     }
@@ -128,7 +119,10 @@ router.get('/newSoup', (req, res) => {
 
 
 
-
+// router.get('/hello', (req, res) => {
+//   res.write('yeyehheey');
+//   res.end();
+// });
 
 
 

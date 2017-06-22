@@ -38,35 +38,20 @@ router.route = (req, res) => {
     //console.log('req.text', req.text)
     //console.log('req.body', req.body)
     //console.log('routes', routes);
-   
+
     if(err){
       res.writeHead(400);
-      res.end()
+      res.end();
       return;
     }
-    // if there is a callback for the requset invokeit 
-    let routeHandler = routes[req.method][req.url.pathname]
-    
+    // if there is a callback for the requset invokeit
+    let routeHandler = routes[req.method][req.url.pathname];
+
     if(routeHandler){
-      routeHandler(req, res)
+      routeHandler(req, res);
     } else {
-      res.writeHead(404)
-      res.end()
+      res.writeHead(404);
+      res.end();
     }
-  })
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  });
+};
