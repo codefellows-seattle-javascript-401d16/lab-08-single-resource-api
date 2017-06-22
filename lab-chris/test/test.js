@@ -2,7 +2,6 @@
 
 const superagent = require('superagent');
 const expect = require('expect');
-// const uuid = require('uuid');
 const server = require('../lib/server.js');
 let tempPlayer;
 
