@@ -10,15 +10,15 @@
   * write a question and observation on canvas
 
 # Build Tool Instructions
-* create a package.json that lists all dependencies and developer dependencies
+<!-- * create a package.json that lists all dependencies and developer dependencies
 * include an .eslintrc
 * include a .gitignore
 * include a readme with project description
-* include any npm scripts for starting server, linting, testing, etc
+* include any npm scripts for starting server, linting, testing, etc -->
 
 # Directions
-* Create these directories to organize your code:
- <!-- * lib done -->
+<!-- * Create these directories to organize your code:
+ <!-- * lib done --> -->
  <!-- * model done -->
  <!-- * test done -->
 <!-- * Create a HTTP Server using the http module done -->
@@ -40,25 +40,25 @@
 <!-- * `DELETE` request
   * pass an `?id=<uuid>` in the query string to delete a specific resource
   * should return 204 status with no content in the body done -->
-* `PUT` request
-  * pass an `?id=<uuid>` in the query string to update a specific resource
-  * pass data as stringified json in the body of a put request to update a resource
+<!-- * `PUT` request
+  * pass an `?id=<uuid>` in the query string to update a specific resource done
+  * pass data as stringified json in the body of a put request to update a resource done -->
 
 ## Tests
-* your tests should start your server when they begin and stop your server when they finish
+<!-- * your tests should start your server when they begin and stop your server when they finish
 * write a test to ensure that your api returns a status code of 404 for routes that have not been registered
-* write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below:
+* write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below: -->
   * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
-  * `GET` - test 400, responds with 'bad request' for if no id is provided in the query string
-  * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
-  * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
-  * `POST` - test 201, response body like  `{<data>}` for a post request with a valid body
+  * `GET` - test 400, responds with 'bad request' for if no id is provided in the query string done
+<!-- * `GET` - test 200, response body like `{<data>}` for a request made with a valid id done -->
+  <!-- * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
+  * `POST` - test 201, response body like  `{<data>}` for a post request with a valid body -->
   * `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
-  * `PUT` - test 202, response body like  `{<data>}` for a put request with a valid  id
+  <!-- * `PUT` - test 202, response body like  `{<data>}` for a put request with a valid  id done -->
   * `DELETE` - test 404, responds with 'not found' for valid request made with an id that was not found
   * `DELETE` - test 204, response for a delete request with a valid id
 
 
-## Bonus
+<!-- ## Bonus
 * **2pts** a `GET` request to `/api/simple-resource-name` with no **?id=** should return an **array** of all of the ids for that resource
-  * if you do this you dont have to test 400 to `GET /api/simple-resource-name`
+  * if you do this you dont have to test 400 to `GET /api/simple-resource-name` -->

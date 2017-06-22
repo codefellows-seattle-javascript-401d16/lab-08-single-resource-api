@@ -4,6 +4,8 @@
 const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
+const mocha = require('mocha');
+const expect = require('expect');
 var storage = {};
 
 //Constructor
@@ -21,6 +23,12 @@ function User(content) {
    res.writeHead(400);
    res.end();
    return;
+ }
+
+ if(!storage[req.url.query.id]) {
+   res.writeHead(404)
+   res.write('not found')
+   res.end()
  }
 
 let user = new User(req.body.content);

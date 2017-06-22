@@ -2,7 +2,6 @@
 
 const superagent = require('superagent')
 const expect = require('expect')
-
 const server = require('../lib/server.js');
 let tempNote;
 
@@ -42,6 +41,11 @@ describe('testing note routes', function(){
 
 // GET
 
+// if(!storage[req.url.query.id]) {
+//   res.writeHead(404)
+//   res.write('not found')
+//   res.end()
+
   describe('testing GET /api/notes', () => {
     it('should respond with a note', (done) => {
       superagent.get(`localhost:3000/api/notes?id=${tempNote.id}`)
@@ -54,5 +58,16 @@ describe('testing note routes', function(){
         done()
       })
     })
+    it('should responds with not found', (done) => {
+      superagent.get(`localhost:3000/api/notes?id=hello`)
+      .end((err, res) => {
+        if(err) return done(err)
+        expect(res.status).toEqual(404)
+        expect(res.body.id).toEqual(tempNote.id)
+        expect(res.body.content).toEqual('not found')
+      tempNote = res.body;
+      done()
+    })
   });
+})
 })
