@@ -137,6 +137,7 @@ describe('testing task routes', () => {
             "taskName": "test","xp": "500","id": "10",
           }
         );
+        done();
       });
   });
 
