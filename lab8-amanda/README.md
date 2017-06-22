@@ -33,17 +33,16 @@
 
 ## Server Endpoints
 ### `/api/simple-resource-name`
-* `POST` request
-  * pass data as stringifed json in the body of a post request to create a resource
-* `GET` request
-  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json
-* `DELETE` request
+<!-- * `POST` request
+  * pass data as stringifed json in the body of a post request to create a resource done -->
+<!-- * `GET` request
+  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json done -->
+<!-- * `DELETE` request
   * pass an `?id=<uuid>` in the query string to delete a specific resource
-  * should return 204 status with no content in the body
+  * should return 204 status with no content in the body done -->
 * `PUT` request
   * pass an `?id=<uuid>` in the query string to update a specific resource
   * pass data as stringified json in the body of a put request to update a resource
-  * optionally decide whether the id of the resource is passed through the body or via the request url
 
 ## Tests
 * your tests should start your server when they begin and stop your server when they finish

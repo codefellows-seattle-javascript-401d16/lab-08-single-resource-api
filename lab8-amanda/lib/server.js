@@ -4,7 +4,6 @@
 const http = require('http');
 const router = require('./router.js');
 const uuid = require('uuid');
-
 var storage = {};
 
 //Constructor
@@ -14,12 +13,7 @@ function User(content) {
 }
 //END Constructor
 
-//GET
-// router.get('/hello', (req, res) => {
-//   res.write('yeyehheey');
-//
-//  res.end();
-
+ // Start GET
  router.get('/newUser', (req, res) => {
    console.log('/newUser');
    if(!req.body.content){
@@ -40,11 +34,10 @@ let user = new User(req.body.content);
  console.log(storage);
  res.end();
 });
-
 //END GET
 
 //POST
-  router.post('/newUser', (req, res) => {
+  router.post('/api/notes', (req, res) => {
     if(!req.body.content){
     res.writeHead(400);
     res.end();
@@ -53,8 +46,6 @@ let user = new User(req.body.content);
 
  let user = new User(req.body.content);
   storage[user.id] = user;
-  console.log(req.body);
-  console.log(req.url);
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
@@ -62,19 +53,9 @@ let user = new User(req.body.content);
   console.log(storage);
   res.end();
 });
-//END POST
-
-
+//end POST
 
 //GET
-router.get('/newSoup', (req, res) => {
-  let user = new User();
-  storage[user] = users;
-  res.write('hello new user! Your new profile has been created! It is below... :)');
-  res.write(users);
-  res.end();
-});
-
 router.get('/api/notes', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400)
@@ -84,7 +65,7 @@ router.get('/api/notes', (req, res) => {
 
  if(!storage[req.url.query.id]){
     res.writeHead(404)
-    res.write('suhh dude')
+    res.write('error - no id in that storage')
     res.end();
     return ;
   }
@@ -95,8 +76,61 @@ router.get('/api/notes', (req, res) => {
 
  res.write(JSON.stringify(storage[req.url.query.id]))
   res.end()
-
 });
+//end GET
+
+//DELETE
+router.delete('/api/notes', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(400)
+    res.end()
+    return ;
+  }
+
+ if(!storage[req.url.query.id]){
+    res.writeHead(404)
+    res.write('error - no id exists to delete in that storage')
+    res.end();
+    return ;
+  }
+
+ res.writeHead(204, {
+  });
+
+ delete storage[req.url.query.id]
+ res.end()
+});
+//end DELETE
+
+//PUT
+router.put('/api/notes', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(400)
+    res.end()
+    return ;
+  }
+
+ if(!storage[req.url.query.id]){
+    res.writeHead(404)
+    res.write('error - no id exists to update that record')
+    res.end();
+    return ;
+  }
+
+let oldData = storage[req.url.query.id]
+let newData = req.body
+oldData.content = newData.content
+console.log(oldData);
+console.log(newData);
+
+   res.writeHead(202, {
+      'Content-Type': 'application/json',
+    })
+
+  res.write(JSON.stringify(storage[req.url.query.id]))
+   res.end()
+ });
+//end PUT
 
 // create server
 const server = module.exports = http.createServer(router.route);
