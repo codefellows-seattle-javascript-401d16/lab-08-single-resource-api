@@ -1,71 +1,72 @@
 'use strict';
 
-// node modules
 const http = require('http');
 const router = require('./router.js');
+const GameScore = require('../model/gamescore.js');
 const uuid = require('uuid');
 
-var storage = {};
+var scoreBoard = {
+  games: {},
+};
 
-// npm modules
-// app modules
-// module logic
-// register routes with router
-router.get('/game', (req, res) => {
-  res.write('Let\'s Play');
+
+router.post('/api/gamescore', (req, res) => {
+  let body = req.body;
+  if(!body.name || !body.score) {
+    res.write(400);
+    res.end();
+    return;
+  }
+  let gameId = uuid.v4();
+  let games = new GameScore(gameId, body.name, body.score);
+  scoreBoard.games[gameId] = games;
+
+  res.writeHead(201, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(games));
   res.end();
+  return;
 });
 
-router.post('/api/notes', (req, res) => {
-  console.log('hit /api/notes');
-  // logic for POST /lulwat
-  if(!req.body.content){
+router.get('/api/gamescore', (req, res) => {
+  if(!req.url.query.id) {
     res.write(400);
     res.end();
     return;
   }
 
-  // uuid  genorate a random string that will not likely conflict with a future random string
-  let game = {
-    id: uuid.v1(),
-    content: req.body.content,
-  };
-
-  storage[game.id] = game;
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-  res.write(JSON.stringify(game));
-  res.end();
-});
-
-router.get('/api/notes', (req, res) => {
-  if(!req.url.query.id){
-    res.writeHead(400);
+  if(!scoreBoard.games[req.url.query.id]) {
+    res.write(404);
     res.end();
-    return ;
-  }
-
-  if(!storage[req.url.query.id]){
-    res.writeHead(404);
-    res.end();
-    return ;
+    return;
   }
 
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-
-  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.write(JSON.stringify(scoreBoard.games[req.url.query.id]));
   res.end();
-
+  return;
 });
 
-// create server
+router.put('/api/gamescore', (req, res) => {
+  let body = req.body;
+  if(!body.id || !body.name || !body.score) {
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  let games = new GameScore(gameId, body.name, body.score);
+  scoreBoard.games[body.id] = games;
+
+  res.writeHead(202, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(games));
+  res.end();
+  return;
+});
+
 const server = module.exports = http.createServer(router.route);
-
-
-// how we did it first
-//http.createServer((req, res) => {
-//router.route(req,res)
-//})
