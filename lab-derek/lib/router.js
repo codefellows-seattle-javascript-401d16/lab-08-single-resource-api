@@ -42,7 +42,7 @@ router.route = (req, res) => {
     if (routeHandler){
       routeHandler(req, res);
     } else {
-      res.writeHead(777);
+      res.writeHead(400);
       res.end();
     }
   });
