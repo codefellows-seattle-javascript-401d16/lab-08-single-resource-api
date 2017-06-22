@@ -12,7 +12,6 @@ router.get('/hello', (req, res) => {
 });
 
 router.post('/api/notes', (req, res) => {
-  console.log('hit /api/notes');
   if(!req.body.content){
     res.write(400);
     res.end();
@@ -48,6 +47,46 @@ router.get('/api/notes', (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
+
+  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.end();
+
+});
+
+router.put('/api/notes', (req, res) => {
+  if(!req.body.content){
+    res.write(400);
+    res.end();
+    return;
+  }
+
+  let note = {
+    id: req.body.id,
+    content: req.body.content,
+  };
+
+  storage[note.id] = note;
+  res.writeHead(202, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(note));
+  res.end();
+});
+
+router.delete('/api/notes', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(400);
+    res.end();
+    return ;
+  }
+
+  if(!storage[req.url.query.id]){
+    res.writeHead(404);
+    res.end();
+    return ;
+  }
+
+  res.writeHead(200, {});
 
   res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
