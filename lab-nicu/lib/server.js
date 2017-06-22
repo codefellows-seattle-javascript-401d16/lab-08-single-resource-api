@@ -18,7 +18,7 @@ router.post('/api/burgers', (req, res) => {
   }
   let burger = new Burger(req.body.name, req.body.location, req.body.stars);
   storage[burger.id] = burger;
-  res.writeHead(201,{
+  res.writeHead(201, {
     'Content-Type': 'application/json',
   });
   res.write(JSON.stringify({ Message: 'Burger Successfully Created', burger }));
@@ -27,7 +27,7 @@ router.post('/api/burgers', (req, res) => {
 
 router.get('/api/burgers', (req, res) => {
   if (!req.url.query.id) {
-    res.writeHead(200,{
+    res.writeHead(200, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify({ Message: 'Burger IDs Available', ids: Object.keys(storage) }));
@@ -36,7 +36,7 @@ router.get('/api/burgers', (req, res) => {
   }
   let burger = storage[req.url.query.id];
   if (burger) {
-    res.writeHead(200,{
+    res.writeHead(200, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify(burger));
@@ -44,7 +44,7 @@ router.get('/api/burgers', (req, res) => {
     return;
   }
   else {
-    res.writeHead(404,{
+    res.writeHead(404, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify({ Message: `ID not found` }));
@@ -56,24 +56,16 @@ router.get('/api/burgers', (req, res) => {
 router.delete('/api/burgers', (req, res) => {
   let burger = storage[req.url.query.id];
   if (burger) {
-    try {
-      delete storage[req.url.query.id];
-      res.writeHead(204,{
-        'Content-Type': 'application/json',
-      });
-      res.write(JSON.stringify({ Message: `Successfully Deleted`, id: req.url.query.id }));
-      res.end();
-      return;
-    } catch (error) {
-      res.writeHead(500,{
-        'Content-Type': 'application/json',
-      });
-      res.end();
-      return;
-    }
+    delete storage[req.url.query.id];
+    res.writeHead(204, {
+      'Content-Type': 'application/json',
+    });
+    res.write(JSON.stringify({ Message: `Successfully Deleted` }));
+    res.end();
+    return;
   }
   else {
-    res.writeHead(404,{
+    res.writeHead(404, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify({ Message: `ID not found` }));
@@ -84,7 +76,7 @@ router.delete('/api/burgers', (req, res) => {
 
 router.put('/api/burgers', (req, res) => {
   if (req.body === {} || !req.body) {
-    res.writeHead(400,{
+    res.writeHead(400, {
       'Content-Type': 'application/json',
     });
     res.end();
@@ -92,7 +84,7 @@ router.put('/api/burgers', (req, res) => {
   }
 
   if (!storage[req.url.query.id]) {
-    res.writeHead(404,{
+    res.writeHead(404, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify({ Message: `ID not found` }));
@@ -101,7 +93,7 @@ router.put('/api/burgers', (req, res) => {
   } else {
     storage[req.url.query.id] = req.body;
     storage[req.url.query.id]['id'] = req.url.query.id;
-    res.writeHead(202,{
+    res.writeHead(202, {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify({ Message: `Successfully updated`, UpdatedValues: req.body }));
