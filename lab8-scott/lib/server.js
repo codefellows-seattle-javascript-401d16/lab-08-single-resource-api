@@ -1,8 +1,8 @@
 'use strict';
 
 const http = require('http');
+const router = require('./router.js');
 const Profileconstructor = require('../model/profile-constructor.js');
-const uuid = require('uuid');
 
 let climberPool = {};
 
@@ -25,7 +25,12 @@ router.post(`/api/climbers`, (req, res)=>{
   return;
 });
 
-
+//creating routes for Create/Post Read/Get and Delete/delete
+router.post(`/api/climberprofile`, (req, res) =>{
+  res.writeHead(200, {
+    /////continue on
+  });
+});
 
 
 
