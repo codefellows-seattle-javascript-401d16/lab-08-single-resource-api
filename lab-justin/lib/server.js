@@ -8,7 +8,7 @@ let storage = {};
 
 router.post('/api/feelings', (req, res) => {
 
-  if(!req.body.name){
+  if(!req.body.name || !req.body.age || !req.body.feeling){
     res.write(400);
     res.end();
     return;
@@ -87,4 +87,4 @@ router.delete('/api/feelings', (req, res) => {
   res.end();
 });
 
-const server = module.exports = http.createServer(router.route);
+module.exports = http.createServer(router.route);
