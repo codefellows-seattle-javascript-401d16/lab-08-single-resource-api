@@ -10,7 +10,7 @@ module.exports = (req, callback) => {
   if (req.method === 'POST' || req.method === 'PUT') {
     let text = '';
     req.on('data', (buf) => {
-      text =+ buf.toString();
+      text += buf.toString();
     });
 
     req.on('end', (err) => {
