@@ -69,11 +69,11 @@ describe('/api/seahawks routes', () => {
           done();
         });
     });
-    it('Should respond 400 with \'Bad request!\'', done => {
+    it('Should respond 200 with \'ID does not exist, responding with all data!', done => {
       superagent.get(`localhost:${PORT}/api/seahawks`)
         .end((err, res) => {
-          expect(res.status).toEqual(400);
-          expect(res.text).toEqual('Bad request!');
+          expect(res.status).toEqual(200);
+          expect(res.text).toContain('ID does not exist, responding with all data!');
           done();
         });
     });
@@ -88,13 +88,13 @@ describe('/api/seahawks routes', () => {
   });
   describe('PUT', () => {
     it('Should respond 202 with \'Seahawk updated!\'', done => {
-      superagent.put(`localhost:${PORT}/api/seahawks`)
-        .send(JSON.stringify({id: tempSeahawk.id, name: 'Russell LOL', height: '6\'12"', weight: '185', position: 'QB', picture: 'testpic/pic.png'}))
+      superagent.put(`localhost:${PORT}/api/seahawks?id=${tempSeahawk.id}`)
+        .send(JSON.stringify({id: tempSeahawk.id, name: 'Russell Hawk', height: '6\'12"', weight: '185', position: 'QB', picture: 'testpic/pic.png'}))
         .end((err, res) => {
           if (err) return done(err);
           expect(res.status).toEqual(202);
           expect(res.body.id).toExist();
-          expect(res.body.name).toEqual('Russell LOL');
+          expect(res.body.name).toEqual('Russell Hawk');
           expect(res.body.height).toEqual('6\'12"');
           expect(res.body.weight).toEqual('185');
           expect(res.body.position).toEqual('QB');
@@ -103,22 +103,49 @@ describe('/api/seahawks routes', () => {
           done();
         });
     });
-    // it('Should respond 400 with \'Bad request!\'', done => {
-    //
-    // });
-    // it('Should respond 404 with \'Seahawk not found!\'', done => {
-    //
-    // });
+    it('Should respond 400 with \'Bad request!\'', done => {
+      superagent.put(`localhost:${PORT}/api/seahawks`)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).toEqual(400);
+          expect(res.text).toEqual('Bad request!');
+          done();
+        });
+    });
+    it('Should respond 404 with \'Seahawk not found!\'', done => {
+      superagent.put(`localhost:${PORT}/api/seahawks?id=9999`)
+      .send(JSON.stringify({id: tempSeahawk.id, name: 'Russell Wilson', height: '6\'12"', weight: '185', position: 'QB', picture: 'testpic/pic.png'}))
+      .end((err, res) => {
+        expect(res.status).toEqual(404);
+        expect(res.text).toEqual('Seahawk not found!');
+        done();
+      });
+    });
   });
-  // describe('DELETE', () => {
-  //   it('Should respond 204 with \'Seahawk deleted!\'', done => {
-  //
-  //   });
-  //   it('Should respond 400 with \'Bad request!\'', done => {
-  //
-  //   });
-  //   it('Should respond 404 with \'Seahawk not found!\'', done => {
-  //
-  //   });
-  // });
+  describe('DELETE', () => {
+    it('Should respond 204 with \'Seahawk deleted!\'', done => {
+      superagent.delete(`localhost:${PORT}/api/seahawks?id=${tempSeahawk.id}`)
+        .end((err, res) => {
+          expect(res.status).toEqual(204);
+          done();
+        });
+    });
+    it('Should respond 400 with \'Bad request!\'', done => {
+      superagent.delete(`localhost:${PORT}/api/seahawks`)
+        .send({})
+        .end((err, res) => {
+          expect(res.status).toEqual(400);
+          expect(res.text).toEqual('Bad request!');
+          done();
+        });
+    });
+    it('Should respond 404 with \'Seahawk not found!\'', done => {
+      superagent.delete(`localhost:${PORT}/api/seahawks?id=9999999`)
+        .end((err, res) => {
+          expect(res.status).toEqual(404);
+          expect(res.text).toEqual('Seahawk not found!');
+          done();
+        });
+    });
+  });
 });

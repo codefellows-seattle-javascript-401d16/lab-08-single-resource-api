@@ -33,10 +33,11 @@ router.post('/api/seahawks', (req, res) => {
 
 router.get('/api/seahawks', (req, res) => {
   if(!req.url.query.id) {
-    res.writeHead(400, {
+    res.writeHead(200, {
       'Content-Type': 'text/plain',
     });
-    res.write('Bad request!');
+    res.write(JSON.stringify(team.players));
+    res.write('ID does not exist, responding with all data!');
     res.end();
     return;
   }
@@ -69,6 +70,15 @@ router.put('/api/seahawks', (req, res) => {
     return;
   }
 
+  if(!team.players[req.url.query.id]) {
+    res.writeHead(404, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Seahawk not found!');
+    res.end();
+    return;
+  }
+
   let player = new Seahawk(body.id, body.name, body.height, body.weight, body.position, body.picture);
   team.players[body.id] = player;
 
@@ -76,6 +86,32 @@ router.put('/api/seahawks', (req, res) => {
     'Content-Type': 'application/json',
   });
   res.write(JSON.stringify(player));
+  res.end();
+  return;
+});
+
+router.delete('/api/seahawks', (req, res) => {
+  if(!req.url.query.id) {
+    res.writeHead(400, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Bad request!');
+    res.end();
+    return;
+  }
+
+  if(!team.players[req.url.query.id]) {
+    res.writeHead(404, {
+      'Content-Type': 'text/plain',
+    });
+    res.write('Seahawk not found!');
+    res.end();
+    return;
+  }
+
+  res.writeHead(204, {
+    'Content-Type': 'text/plain',
+  });
   res.end();
   return;
 });
