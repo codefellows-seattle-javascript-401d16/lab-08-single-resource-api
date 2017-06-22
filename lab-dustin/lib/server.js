@@ -4,17 +4,9 @@
 // node modules
 const http = require('http');
 const router = require('./router.js');
-const uuid = require('uuid');
-const requestParse = require('./request-parse.js');
 const Note = require('../model/note.js');
 
-var storage = {
-  '95437340-56e3-11e7-acdc-07e5cf283b68':
-  {
-    'content': 'zup',
-    'dateCreated': '2017-06-22T00:41:51.988Z',
-  },
-};
+var storage = {};
 
 // npm modules
 // app modules
@@ -26,17 +18,14 @@ router.get('/hello', (req, res) => {
 });
 
 router.post('/api/notes', (req, res) => {
-  // console.log('req.body: ', req.body);
 
-  if(!req.body){
-    res.writeHead(404);
+  if(!req.body || req.body.text === undefined){
+    res.writeHead(400);
     res.end();
     return;
   }
 
   let note = new Note(req.body.text);
-
-  // console.log('note, ', note);
 
   storage[note.id] = note;
   res.writeHead(200, {
@@ -75,27 +64,30 @@ router.delete('/api/notes', (req, res) => {
   }
 
   delete storage[req.url.query.id];
-  console.log(storage);
-  res.writeHead(200, {'Content-Type' : 'application/json'});
+  res.writeHead(204, {'Content-Type' : 'application/json'});
   res.write('{}');
   res.end();
 });
 
 router.put('/api/notes', (req, res) => {
-  if (!req.query.url.id) {
-    res.writeHead(404);
+  // if (!req.query.url.id) {
+  //   res.writeHead(404);
+  //   res.end();
+  //   return;
+  // }
+
+  if (!req.body.text || req.body.text === undefined) {
+    res.writeHead(400);
     res.end();
     return;
   }
 
-  if (!req.body.text) {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
+  console.log(storage);
+  storage[req.url.query.id].content = req.url.query.id.content;
 
-  res.writeHead(200, {'Content-Type' : 'application/json'});
-  res.update(storage[req.url.query.id].text = req.body.text);
+  res.writeHead(202, {'Content-Type' : 'application/json'});
+  res.write('{}');
+  res.end();
 
 });
 
