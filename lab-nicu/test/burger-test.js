@@ -69,7 +69,7 @@ describe('testing burger routes', function () {
   describe('testing PUT /api/burgers', () => {
     it('should update the name of the burger to Rafiki Burger with a 202 response', (done) => {
       superagent.put(`localhost:3000/api/burgers?id=${tempBurger.burger.id}`)
-        .send({ id: tempBurger.id, name: 'Rafiki Burger', location: 'Seattle,WA', stars: '4' })
+        .send({ name: 'Rafiki Burger', location: 'Seattle,WA', stars: '4' })
         .end((err, res) => {
           expect(res.status).toEqual(202);
           expect(res.body.UpdatedValues.name).toEqual('Rafiki Burger');
