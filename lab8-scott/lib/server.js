@@ -18,6 +18,7 @@ router.post('/api/climberprofile', (req, res)=>{
   let climberProfile = new ProfileConstructor(req.body.age, req.body.type);
   //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
   climberPool[climberProfile.id] = climberProfile;
+  console.log('climber profile, server.js: ', climberPool);
   //respond that we recieved the request
   res.writeHead(200, {
     'Content-Type' : 'application/json',
@@ -42,6 +43,7 @@ router.get('/api/climberprofile', (req, res) =>{
     res.end();
     return;
   }
+  console.log(`get router id: `, req.url.query);
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });
@@ -70,24 +72,24 @@ router.delete('/api/climberprofile', (req, res) =>{
 
 //creating route for Put
 router.get(`/api/climberprofile`, (req, res) =>{
-  if (!climberPool[req.url.query]) {
+  if (!climberPool[req.url.query.id]) {
     res.writeHead(404);
     res.write(`No profile found with that id`);
     res.end();
     return;
   }
-  if (!req.url.query) {
+  if (!req.url.query.id) {
     res.writeHead(400);
     res.write(`Please input an id`);
     res.end();
     return;
   }
   //data is passed in the body request as stringified json. Set the new req body to the profile at that id.
-  climberPool[req.url.query] = req.body;
+  // climberPool[req.url.query.id] = req.body;
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });
-  res.write(climberPool[req.url.query]);
+  res.write(JSON.stringify(climberPool[req.url.query.id]));
   res.end();
   return;
 });

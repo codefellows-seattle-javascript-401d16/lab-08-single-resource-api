@@ -26,7 +26,21 @@ describe(`Testing all climber profile routes`, function(){
         expect(res.body.age).toEqual(`30`);
         expect(res.body.type).toEqual(`trad`);
         tempProfile = res.body;
-        console.log('post test', tempProfile);
+        done();
+      });
+    });
+  });
+
+  describe(`Testing GET method on /api/climberprofile`, () =>{
+    it(`should respond with a specific profile`, (done) => {
+      console.log('tempProfile id:', tempProfile.id);
+      superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(200);
+        expect(res.body.id).toExist();
+        expect(res.body.age).toEqual(`30`);
+        expect(res.body.type).toEqual(`trad`);
         done();
       });
     });
