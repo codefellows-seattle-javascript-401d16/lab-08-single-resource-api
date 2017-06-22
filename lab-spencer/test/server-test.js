@@ -69,11 +69,12 @@ describe('/api/seahawks routes', () => {
           done();
         });
     });
-    it('Should respond 200 with \'ID does not exist, responding with all data!', done => {
+    it('Should respond 200 with \'No ID, responding with all data!', done => {
       superagent.get(`localhost:${PORT}/api/seahawks`)
         .end((err, res) => {
+          if(err) return done(err);
           expect(res.status).toEqual(200);
-          expect(res.text).toContain('ID does not exist, responding with all data!');
+          expect(res.body).toExist();
           done();
         });
     });

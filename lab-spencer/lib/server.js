@@ -37,7 +37,6 @@ router.get('/api/seahawks', (req, res) => {
       'Content-Type': 'application/json',
     });
     res.write(JSON.stringify(team.players));
-    res.write('No ID, responding with all data!');
     res.end();
     return;
   }
