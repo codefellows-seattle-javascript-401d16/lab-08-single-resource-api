@@ -27,6 +27,9 @@ module.exports = (req, callback) => {
         callback(null);
       } catch (err) {
         callback(err);
+        // res.writeHead(400);
+        // res.end();
+        // return;
       }
     });
     req.on('err', (err) => {

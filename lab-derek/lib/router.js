@@ -34,7 +34,7 @@ router.delete = (pathname, callback) => {
 router.route = (req, res) => {
   requestParse(req, (err) => {
     if (err) {
-      res.writeHead(400);
+      res.writeHead(888);
       res.end();
       return;
     }
@@ -42,7 +42,7 @@ router.route = (req, res) => {
     if (routeHandler){
       routeHandler(req, res);
     } else {
-      res.writeHead(400);
+      res.writeHead(777);
       res.end();
     }
   });
