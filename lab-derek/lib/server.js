@@ -13,16 +13,17 @@ let storage = {};
 
 //TODO*DONE: POST request - pass data as stringifed json in the body of a post request to create a resource
 
-router.post('/', (req, res) => {
+router.post('/api', (req, res) => {
   if(!req.body){
-    res.write('fail - no body content');
+    res.write('bad request');
     res.writeHead(400);
     res.end();
     return;
   }
   let newTask = new Task (req.body.name, req.body.xp);
   storage[newTask.id] = newTask;
-  res.writeHead(200, {
+  res.writeHead(201);
+  res.writeHead({
     'Content-type': 'application/json',
   });
   res.write(`successful POST request, created task ${newTask.id}\n`);
@@ -32,9 +33,10 @@ router.post('/', (req, res) => {
 
 //TODO*DONE: GET request - pass an ?id=<uuid> in the query string to retrieve a specific resource as json
 
-router.get('/', (req, res) => {
+router.get('/api', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
+    res.write('bad request');
     res.end();
     return;
   }
@@ -55,7 +57,7 @@ router.get('/', (req, res) => {
 
 //TODO*DONE: PUT request - pass an ?id=<uuid> in the query string to update a specific resource, pass data as stringified json in the body of a put request to update a resource, optionally decide whether the id of the resource is passed through the body or via the request url
 
-router.put('/', (req, res) => {
+router.put('/api', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('invalid query string');
@@ -64,7 +66,7 @@ router.put('/', (req, res) => {
   }
   if(!req.body){
     res.writeHead(400);
-    res.write('PUT requires valid body content');
+    res.write('bad request');
     res.end();
     return;
   }
@@ -74,7 +76,7 @@ router.put('/', (req, res) => {
   if(req.body.xp){
     storage[req.url.query.id].xp = req.body.xp;
   }
-  res.writeHead(200, {
+  res.writeHead(202, {
     'Content-type': 'application/json',
   });
   res.write('update successful\n');
@@ -85,10 +87,16 @@ router.put('/', (req, res) => {
 
 //TODO*DONE: DELETE request - pass an ?id=<uuid> in the query string to delete a specific resource should return 204 status with no content in the body
 
-router.delete('/', (req, res) => {
+router.delete('/api', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('invalid id in querystring');
+    res.end();
+    return;
+  }
+  if(!storage[req.url.query.id]){
+    res.writeHead(404);
+    res.write('not found');
     res.end();
     return;
   }
