@@ -7,7 +7,7 @@ const Player = require('../model/player.js');
 var storage = {};
 
 router.post('/api/player', (req, res) => {
-  if(!req.body.name){
+  if(!req.body.name || !req.body.team || !req.body.position){
     res.writeHead(400);
     res.end();
     return;
@@ -93,4 +93,4 @@ router.delete('/api/player', (req, res) => {
   res.end();
 });
 
-const server = module.exports = http.createServer(router.route);
+module.exports = http.createServer(router.route);
