@@ -22,8 +22,7 @@ router.post('/api', (req, res) => {
   }
   let newTask = new Task (req.body.name, req.body.xp);
   storage[newTask.id] = newTask;
-  res.writeHead(201);
-  res.writeHead({
+  res.writeHead(201, {
     'Content-type': 'application/json',
   });
   res.write(`successful POST request, created task ${newTask.id}\n`);
