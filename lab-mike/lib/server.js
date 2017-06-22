@@ -25,7 +25,6 @@ router.post('/api/notes', (req, res) => {
   res.write(JSON.stringify(note));
   res.end();
   return;
-  // pass data as stringifed json in the body of a post request to create a resource
 });
 
 router.get('/api/notes', (req, res) => {
@@ -51,7 +50,6 @@ router.get('/api/notes', (req, res) => {
   res.end();
   return;
 });
-// pass an ?id=<uuid> in the query string to retrieve a specific resource as json
 
 router.delete('/api/notes', (req, res) => {
   if (!req.url.query.id) {
@@ -65,13 +63,12 @@ router.delete('/api/notes', (req, res) => {
     res.end();
     return;
   }
+
   storage[req.url.query.id] = undefined;
   res.writeHead(204);
   res.end();
   return;
 });
-// pass an ?id=<uuid> in the query string to delete a specific resource
-// should return 204 status with no content in the body
 
 router.put('/api/notes', (req, res) => {
   if (!req.url.query.id) {

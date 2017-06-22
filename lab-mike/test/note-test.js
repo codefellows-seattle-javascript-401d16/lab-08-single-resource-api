@@ -113,7 +113,38 @@ describe('testing note paths', () => {
         done();
       });
     });
+  });
 
+  describe('testing DELETE /api/notes', () => {
+    it('should respond with a DELETE 204', (done) => {
+      superagent.delete(`localhost:3000/api/notes?id=${tempNote.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(204);
+        done();
+      });
+    });
+    it('should error when we make a GET for our deleted key', (done) => {
+      superagent.get(`localhost:3000/api/notes?id=${tempNote.id}`)
+      .end((err, res) => {
+        expect(res.status).toEqual(404);
+        done();
+      });
+    });
+    it('should respond with a POST 400', (done) => {
+      superagent.delete('localhost:3000/api/notes')
+      .end((err, res) => {
+        expect(res.status).toEqual(400);
+        done();
+      });
+    });
+    it('should respond with a POST 404', (done) => {
+      superagent.delete('localhost:3000/api/notes?id=3')
+      .end((err, res) => {
+        expect(res.status).toEqual(404);
+        done();
+      });
+    });
   });
 
 });
