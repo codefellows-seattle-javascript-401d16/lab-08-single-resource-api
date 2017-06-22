@@ -7,7 +7,7 @@ const requestParse = require('./request-parse.js');
 const router = require('./router.js');
 const Task = require('../model/task.js');
 
-//TODO: Create a storage module that will store resources by their type and id
+//TODO*DONE: Create a storage module that will store resources by their type and id
 
 let storage = {};
 
@@ -40,7 +40,7 @@ router.get('/', (req, res) => {
   }
   if(!storage[req.url.query.id]){
     res.writeHead(404);
-    res.write('task id does not exist');
+    res.write('not found');
     res.end();
     return;
   }
@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
   return;
 });
 
-//TODO: PUT request - pass an ?id=<uuid> in the query string to update a specific resource, pass data as stringified json in the body of a put request to update a resource, optionally decide whether the id of the resource is passed through the body or via the request url
+//TODO*DONE: PUT request - pass an ?id=<uuid> in the query string to update a specific resource, pass data as stringified json in the body of a put request to update a resource, optionally decide whether the id of the resource is passed through the body or via the request url
 
 router.put('/', (req, res) => {
   if(!req.url.query.id){
@@ -83,7 +83,7 @@ router.put('/', (req, res) => {
   return;
 });
 
-//TODO: DELETE request - pass an ?id=<uuid> in the query string to delete a specific resource should return 204 status with no content in the body
+//TODO*DONE: DELETE request - pass an ?id=<uuid> in the query string to delete a specific resource should return 204 status with no content in the body
 
 router.delete('/', (req, res) => {
   if(!req.url.query.id){
