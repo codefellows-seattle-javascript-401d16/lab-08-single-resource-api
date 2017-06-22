@@ -27,7 +27,7 @@ router.get('/api/user', (req, res) => {
 
 router.put('/api/user', (req, res) => {
   const id = req.url.query.id || req.body.id;
-  if (!database[id] || !id) return headWrite(res, 400);
+  if (!database[id]) return headWrite(res, 400);
   database[id] = Object.assign({}, database[id], req.body);
   headWrite(res, 200, `user ${name} successfully updated`);
 });
