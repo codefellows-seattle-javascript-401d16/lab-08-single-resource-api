@@ -47,11 +47,6 @@ router.get('/api/feelings', (req, res) => {
 });
 
 router.put('/api/feelings', (req, res) => {
-  // if(!req.url.query.id) {
-  //   res.writeHead(400);
-  //   res.end();
-  //   return;
-  // }
   if(!req.url.query.id) {
     res.writeHead(400);
     res.end();
