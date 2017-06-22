@@ -7,9 +7,9 @@ const uuid = require('uuid');
 //TODO*DONE: Also include two other properties of your choice (like name, creationDate, etc.)
 
 module.exports = class Task {
-  constructor(taskName, xp){
+  constructor(taskName, xp, id){
     this.taskName = taskName;
     this.xp = xp;
-    this.id = uuid.v1();
+    id ? this.id = id : this.id = uuid.v1();
   }
 };

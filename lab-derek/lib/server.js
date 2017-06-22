@@ -20,7 +20,7 @@ router.post('/api', (req, res) => {
     res.end();
     return;
   }
-  let newTask = new Task (req.body.name, req.body.xp);
+  let newTask = new Task (req.body.name, req.body.xp, req.body.id);
   storage[newTask.id] = newTask;
   res.writeHead(201, {
     'Content-type': 'application/json',
