@@ -1,7 +1,7 @@
 'use strict';
 
-const superagent = require('superagent');
 const server = require('../lib/server.js');
+const superagent = require('superagent');
 const expect = require('expect');
 
 let tempMovie;
@@ -15,14 +15,16 @@ describe('testing movie routes', function(){
   });
 
   describe('testing POST /api/movies', () => {
-    it('should respond with a movie', (done) => {
+    it('should respond with a 201', (done) => {
       superagent.post('localhost:3000/api/movies')
-      .send({title: 'The Departed', year: 2006, genre: 'thriller'})
+      .send(JSON.stringify( {title: 'The Departed', year: '2006', genre: 'thriller'}))
       .end((err, res) => {
         if (err) return done(err);
         expect(res.status).toEqual(201);
         expect(res.body.id).toExist();
         expect(res.body.title).toEqual('The Departed');
+        expect(res.body.year).toEqual('2006');
+        expect(res.body.genre).toEqual('thriller');
         tempMovie = res.body;
         done();
       });
@@ -45,21 +47,22 @@ describe('testing movie routes', function(){
         if (err) return done(err);
         expect(res.status).toEqual(200);
         expect(res.body.id).toEqual(tempMovie.id);
+        expect(res.body.title).toEqual('The Departed');
+        expect(res.body.year).toEqual('2006');
+        expect(res.body.genre).toEqual('thriller');
         tempMovie = res.body;
         done();
       });
     });
     it('should respond with a 404 not found', (done) => {
       superagent.get(`localhost:3000/api/movies?id=6`)
-      .send({})
       .end((err, res) => {
         expect(res.status).toEqual(404);
         done();
       });
     });
     it('should respond with a 400 bad request', (done) => {
-      superagent.get('localhost:3000/api/movies?=')
-      .send({})
+      superagent.get('localhost:3000/api/movies')
       .end((err, res) => {
         expect(res.status).toEqual(400);
         done();
@@ -67,41 +70,42 @@ describe('testing movie routes', function(){
     });
   });
   describe('testing PUT /api/movies', () => {
+    it('should respond with a 202', (done) => {
+      superagent.put(`localhost:3000/api/movies?id=${tempMovie.id}`)
+      .send(JSON.stringify( {title: 'The Departed', year: '2006', genre: 'thriller'}))
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(202);
+        expect(res.body.id).toExist();
+        expect(res.body.title).toEqual('The Departed');
+        expect(res.body.year).toEqual('2006');
+        expect(res.body.genre).toEqual('thriller');
+        tempMovie = res.body;
+        done();
+      });
+    });
     it('should respond with a 400 bad request', (done) => {
-      superagent.put('localhost:3000/api/movies')
+      superagent.put(`localhost:3000/api/movies?id=${tempMovie.id}`)
       .send({})
       .end((err, res) => {
         expect(res.status).toEqual(400);
         done();
       });
     });
-    it('should respond with a movie', (done) => {
-      superagent.put('localhost:3000/api/movies')
-      .send({title: 'The Departed', year: 2006, genre: 'thriller'})
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).toEqual(201);
-        expect(res.body.id).toExist();
-        expect(res.body.title).toEqual('The Departed');
-        tempMovie = res.body;
-        done();
-      });
-    });
   });
   describe('testing DELETE /api/movies', () => {
-    it('should respond with a 404 not found', (done) => {
-      superagent.delete(`localhost:3000/api/player?i`)
-      .send({id: 6})
-      .end((err, res) => {
-        expect(res.status).toEqual(404);
+    it('should return a 204', (done) => {
+      superagent.delete(`localhost:3000/api/movies?id=${tempMovie.id}`)
+      .end((err, res) => { console.log(tempMovie); console.log(res.status);
+        if (err) return done(err);
+        expect(res.status).toEqual(204);
         done();
       });
     });
-    it('should delete a movie and return a 204', (done) => {
-      superagent.delete('localhost:3000/api/movies?id=6')
+    it('should respond with a 404 not found', (done) => {
+      superagent.delete(`localhost:3000/api/movies?i`)
       .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).toEqual(204);
+        expect(res.status).toEqual(404);
         done();
       });
     });

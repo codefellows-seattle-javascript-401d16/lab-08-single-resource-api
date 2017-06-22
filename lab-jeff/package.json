@@ -18,5 +18,8 @@
     "mocha": "^3.4.2",
     "superagent": "^3.5.2",
     "uuid": "^3.1.0"
+  },
+  "dependencies": {
+    "mocha": "^3.4.2"
   }
 }
