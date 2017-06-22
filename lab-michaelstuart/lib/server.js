@@ -17,12 +17,9 @@ router.post('/api/user', (req, res) => {
 
 router.get('/api/user', (req, res) => {
   const id = req.url.query.id;
-  if (!id) {
-    const userList = JSON.stringify((Object.keys(database) || []).map(v => v));
-    return headWrite(res, 200, userList);
-  }
   if (!database[id]) return headWrite(res, 404);
-  headWrite(res, 200, JSON.stringify(database[id]));
+  const userList = (Object.keys(database) || []).map(v => v);
+  headWrite(res, 200, JSON.stringify(id ? database[id] : userList));
 });
 
 router.put('/api/user', (req, res) => {
