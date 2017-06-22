@@ -38,8 +38,15 @@ router.get('/', (req, res) => {
     res.end();
     return;
   }
-  //this new task for testing purposes to ensure resource available.
-  storage[req.url.query.id] = new Task ('testName', 10);
+  if(!storage[req.url.query.id]){
+    res.writeHead(404);
+    res.write('task id does not exist');
+    res.end();
+    return;
+  }
+  res.writeHead(200, {
+    'Content-type': 'application/json',
+  });
   res.write(`successful GET request to id ${req.url.query.id}\n`);
   res.write(`returning task: ${JSON.stringify(storage[req.url.query.id])}\n`);
   res.end();
@@ -61,9 +68,15 @@ router.put('/', (req, res) => {
     res.end();
     return;
   }
-  storage[req.url.query.id].taskName = req.body.name;
-  storage[req.url.query.id].xp = req.body.xp;
-  res.writeHead(200);
+  if(req.body.name){
+    storage[req.url.query.id].taskName = req.body.name;
+  }
+  if(req.body.xp){
+    storage[req.url.query.id].xp = req.body.xp;
+  }
+  res.writeHead(200, {
+    'Content-type': 'application/json',
+  });
   res.write('update successful\n');
   res.write(`returning task: ${JSON.stringify(storage[req.url.query.id])}\n`);
   res.end();
@@ -72,6 +85,17 @@ router.put('/', (req, res) => {
 
 //TODO: DELETE request - pass an ?id=<uuid> in the query string to delete a specific resource should return 204 status with no content in the body
 
-
+router.delete('/', (req, res) => {
+  if(!req.url.query.id){
+    res.writeHead(400);
+    res.write('invalid id in querystring');
+    res.end();
+    return;
+  }
+  storage[req.url.query.id] = undefined;
+  res.writeHead(204);
+  res.end();
+  return;
+});
 
 const server = module.exports = http.createServer(router.route);
