@@ -10,11 +10,11 @@ const Task = require('../model/task.js');
 //TODO*DONE: Create a storage module that will store resources by their type and id
 
 let storage = [];
-let idTest = [];
+let IDs = [];
 
 //TODO*DONE: POST request - pass data as stringifed json in the body of a post request to create a resource
 
-router.post('/api', (req, res) => {
+router.post('/api/tasks', (req, res) => {
   if(!req.body){
     res.write('bad request');
     res.writeHead(400);
@@ -23,7 +23,7 @@ router.post('/api', (req, res) => {
   }
   let newTask = new Task (req.body.name, req.body.xp, req.body.id);
   storage[newTask.id] = newTask;
-  idTest.push(newTask.id);
+  IDs.push(newTask.id);
   res.writeHead(201, {
     'Content-type': 'application/json',
   });
@@ -34,19 +34,19 @@ router.post('/api', (req, res) => {
 
 //TODO*DONE: GET request - pass an ?id=<uuid> in the query string to retrieve a specific resource as json
 
-router.get('/api', (req, res) => {
+router.get('/api/tasks', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('bad request');
-    res.write('\navailable IDs: ' + JSON.stringify(idTest));
-    console.log(idTest);
+    res.write('\navailable IDs: ' + JSON.stringify(IDs));
+    console.log(IDs);
     res.end();
     return;
   }
   if(!storage[req.url.query.id]){
     res.writeHead(404);
     res.write('not found');
-    console.log(idTest);
+    console.log(IDs);
     res.end();
     return;
   }
@@ -61,7 +61,7 @@ router.get('/api', (req, res) => {
 
 //TODO*DONE: PUT request - pass an ?id=<uuid> in the query string to update a specific resource, pass data as stringified json in the body of a put request to update a resource, optionally decide whether the id of the resource is passed through the body or via the request url
 
-router.put('/api', (req, res) => {
+router.put('/api/tasks', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('invalid query string');
@@ -91,7 +91,7 @@ router.put('/api', (req, res) => {
 
 //TODO*DONE: DELETE request - pass an ?id=<uuid> in the query string to delete a specific resource should return 204 status with no content in the body
 
-router.delete('/api', (req, res) => {
+router.delete('/api/tasks', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('invalid id in querystring');
