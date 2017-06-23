@@ -19,7 +19,7 @@ router.post('/api/climberprofile', (req, res)=>{
   //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
   climberPool[climberProfile.id] = climberProfile;
   //respond that we recieved the request
-  res.writeHead(200, {
+  res.writeHead(201, {
     'Content-Type' : 'application/json',
   });
   res.write(JSON.stringify(climberProfile));
@@ -39,9 +39,10 @@ router.get('/api/climberprofile', (req, res) =>{
   }
   if (!climberPool[req.url.query.id]) {
     console.log('breakpoint 1');
-    res.writeHead(404);
+    res.writeHead(404, {
+      'Content-Type': 'text/plain',
+    });
     console.log('breakpoint 2');
-    res.write(`No profile found with that id`);
     res.end();
     return;
   }

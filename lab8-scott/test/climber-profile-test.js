@@ -16,12 +16,12 @@ describe(`Testing all climber profile routes`, function(){
   });
 
   describe(`Testing POST method on /api/climberprofile`, () =>{
-    it(`should respond with a profile`, (done) => {
+    it(`should respond with a profile and 201`, (done) => {
       superagent.post('localhost:3000/api/climberprofile')
       .send({age: `30`, type: `trad`})
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.status).toEqual(200);
+        expect(res.status).toEqual(201);
         expect(res.body.id).toExist();
         expect(res.body.age).toEqual(`30`);
         expect(res.body.type).toEqual(`trad`);
@@ -29,26 +29,41 @@ describe(`Testing all climber profile routes`, function(){
         done();
       });
     });
+    it('should respond with a 400 error', (done) => {
+      superagent.post('localhost:3000/api/climberprofile')
+      .send()
+      .end((err) => {
+        expect(err.status).toEqual(400);
+        done();
+      });
+    });
   });
 
   describe(`Testing GET method on /api/climberprofile`, () =>{
-    // it(`should respond with a 200 and specific profile`, (done) => {
-    //   console.log('tempProfile id:', tempProfile.id);
-    //   superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
-    //   .end((err, res) => {
-    //     if (err) return done(err);
-    //     expect(res.status).toEqual(200);
-    //     expect(res.body.id).toExist();
-    //     expect(res.body.age).toEqual(`30`);
-    //     expect(res.body.type).toEqual(`trad`);
-    //     done();
-    //   });
-    // });
+    it(`should respond with a 200 and specific profile`, (done) => {
+      console.log('tempProfile id:', tempProfile.id);
+      superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(200);
+        expect(res.body.id).toExist();
+        expect(res.body.age).toEqual(`30`);
+        expect(res.body.type).toEqual(`trad`);
+        done();
+      });
+    });
     it(`should respond with a 400`, (done) => {
       superagent.get('localhost:3000/api/climberprofile')
       .end((err) => {
-        console.log('err-status: ', err.status);
         expect(err.status).toEqual(400);
+        done();
+      });
+    });
+    it(`should respond with a 404`, (done) => {
+      superagent.get('localhost:3000/api/climberprofileid=1234')
+      .end((err) => {
+        console.log('err-status: ', err.status);
+        expect(err.status).toEqual(404);
         done();
       });
     });
