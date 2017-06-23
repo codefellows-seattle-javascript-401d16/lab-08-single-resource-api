@@ -3,79 +3,54 @@
 const http = require('http');
 const router = require('./router.js');
 const OptIn = require('../model/opt-in.js');
-
+const responseHelpers = require('./responseHelpers.js');
 var storage = {};
 
 router.post('/api/opt', (req, res) => {
-  if(!req.body.content){
-    res.write(400);
-    res.end();
-    return;
+  responseHelpers(res);
+  if(!req.body.name || !req.body.age){
+    return res.sendStatus(400);
   }
   let optIn = new OptIn(req.body.name, req.body.age);
   storage[optIn.id] = optIn;
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-  res.write(JSON.stringify(optIn));
-  res.end();
+  res.sendJSON(201, optIn);
 });
 
 router.put('/api/opt', (req, res) => {
-  if(!req.url.query.id){
-    res.writeHead(400);
-    res.end();
-    return ;
+  responseHelpers(res);
+  if(!req.body.name || !req.body.age){
+    return res.sendStatus(400);
   }
-  if(!storage[req.url.query.id]){
-    res.writeHead(404);
-    res.end();
-    return ;
+  if(!storage[req.body.id]){
+    return res.sendStatus(404);
   }
-  if(req.url.query.name) storage[req.url.query.id].name = req.url.query.name;
-  if(req.url.query.age) storage[req.url.query.id].age = req.url.query.age;
+  if(req.body.name) storage[req.body.id].name = req.body.name;
+  if(req.body.age) storage[req.body.id].age = req.body.age;
+  return res.sendJSON(202, storage[req.body.id]);
 });
 
 router.get('/api/opt', (req, res) => {
+  responseHelpers(res);
   if(!req.url.query.id){
-    res.writeHead(400);
-    res.end();
-    return ;
+    return res.sendStatus(400);
   }
   if(!storage[req.url.query.id]){
-    res.writeHead(404);
-    res.end();
-    return ;
+    return res.sendStatus(404);
   }
-  res.writeHead(200, {
-    'Content-Type': 'application/json',
-  });
-  res.write(JSON.stringify(storage[req.url.query.id]));
-  res.end();
+  return res.sendJSON(200, storage[req.url.query.id]);
 });
 
+
 router.delete('/api/opt', (req, res) => {
+  responseHelpers(res);
   if(!req.url.query.id) {
-    res.writeHead(400, {
-      'Content-Type': 'text/plain',
-    });
-    res.write('Bad request: No id provided.');
-    res.end();
-    return;
+    return res.sendStatus(400);
   }
   if(!storage[req.url.query.id]) {
-    res.writeHead(404, {
-      'Content-Type': 'text/plain',
-    });
-    res.write('id not found.');
-    res.end();
-    return;
+    return res.sendStatus(404);
   }
-  res.writeHead(204, {
-    'Content-Type': 'text/plain',
-  });
-  res.end();
-  return;
+  delete storage[req.url.query.id];
+  return res.sendText(202, 'User deleted.');
 });
 
 module.exports = http.createServer(router.route);

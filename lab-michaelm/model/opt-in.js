@@ -1,8 +1,28 @@
 'use strict';
-const uuid = require('uuid');
+let uuid = require('uuid');
 
-module.exports = function (name, age) {
-  this.id = uuid.v1();
-  this.name = name;
-  this.age = age;
-};
+class OptIn {
+  constructor(name, age) {
+    this.id = uuid.v1();
+    this.name = name;
+    this.age = age;
+  }
+}
+//   save(){
+//     return storage.setItem(this);
+//   }
+//
+//   update(){
+//     return storage.updateItem(this);
+//   }
+//
+//   delete(){
+//     return storage.deleteItem(this);
+//   }
+// }
+//
+// OptIn.fetchId = (id) => {
+//   return storage.fetchItem(id);
+// };
+
+module.exports = OptIn;

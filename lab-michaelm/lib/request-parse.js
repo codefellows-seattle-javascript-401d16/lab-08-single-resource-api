@@ -12,11 +12,10 @@ module.exports = (req, callback) => {
     req.on('data', (buf) => {
       text += buf.toString();
     });
-
     req.on('end', (err) => {
       req.text = text;
       try {
-        req.body = text;
+        req.body = JSON.parse(text);
         callback(null);
       } catch (err) {
         callback(err);
