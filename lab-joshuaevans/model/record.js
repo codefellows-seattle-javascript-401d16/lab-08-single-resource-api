@@ -1,13 +1,30 @@
 'use strict';
 
-const uuid = require('uuid');
+const dbase = require('./dbase.js');
 
-class Note {
+class Record {
   constructor(title, artist){
-    this.id = uuid.v4();
     this.title = title;
     this.artist = artist;
   }
+
+  save(){
+    return dbase.setItem(this);
+  }
+
+  update(){
+    return dbase.updateItem(this);
+  }
+
+  delete(){
+    return dbase.deleteItem(this.id);
+  }
 }
 
-module.exports = Note;
+Record.findById = (id) => {
+  return dbase.findItem(id)
+  .then(data => { data;
+  });
+};
+
+module.exports = Record;

@@ -4,6 +4,7 @@ const server = require('../lib/server.js');
 const expect = require('expect');
 const superagent = require('superagent');
 const uuid = require('uuid');
+const fs = require('fs-extra');
 
 describe('testing http methods', () => {
   before((done) => {
@@ -20,7 +21,6 @@ describe('testing http methods', () => {
       superagent.post('localhost:3000/api/records')
       .send({title: 'titletest', artist: 'artisttest'})
       .end(((err, res) => {
-        if (err) return done(err);
         expect(res.status).toEqual(200);
         tempRecord = res.body;
         done();
@@ -54,10 +54,10 @@ describe('testing http methods', () => {
       });
     });
     it('should return 200 when correct information is passed in', (done) => {
-      superagent.get(`localhost:3000/api/records?id=${tempRecord.id}`)
+      superagent.get(`localhost:3000/api/records?id=`)
+      .query({ id: tempRecord.id })
       .end((err, res) => {
         expect(res.body.id).toEqual(tempRecord.id);
-        tempRecord = res.body;
         done();
       });
     });
@@ -73,11 +73,11 @@ describe('testing http methods', () => {
       });
     });
     it('should return a 200 status witha  valid input on PUT', (done) => {
-      superagent.put('localhost:3000/api/records')
-      .query({id: tempRecord.id })
-      .send({title: 'newthing', artist: 'newartist'})
+      superagent.put(`localhost:3000/api/records?id=${tempRecord.id}`)
+      .send({title: 'newthing'})
       .end((err, res) => {
         expect(res.status).toEqual(200);
+        expect(res.body.id).toEqual(tempRecord.id);
         done();
       });
     });
@@ -96,6 +96,7 @@ describe('testing http methods', () => {
       superagent.delete('localhost:3000/api/records')
       .query({id: tempRecord.id })
       .end((err, res) => {
+        if (err) done (err)
         expect(res.status).toEqual(204);
         done();
       });
