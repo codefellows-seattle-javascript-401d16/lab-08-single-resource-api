@@ -28,7 +28,6 @@ router.put = (pathname, callback) => {
 };
 
 router.route = (req, res) => {
-  // parse the request
   requestParse(req, (err) => {
     if(err){
       res.writeHead(400);
@@ -44,3 +43,4 @@ router.route = (req, res) => {
     }
   });
 };
+console.log(router.route);
