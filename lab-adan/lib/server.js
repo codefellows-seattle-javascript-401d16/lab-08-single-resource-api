@@ -18,7 +18,7 @@ router.post('/api/gamescore', (req, res) => {
     return;
   }
   let gameId = uuid.v4();
-  let games = new GameScore(gameId, body.name, body.score);
+  let games = new GameScore(body.name, body.score, gameId);
   scoreBoard.games[gameId] = games;
 
   res.writeHead(201, {
@@ -31,13 +31,13 @@ router.post('/api/gamescore', (req, res) => {
 
 router.get('/api/gamescore', (req, res) => {
   if(!req.url.query.id) {
-    res.write(400);
+    res.writeHead(400);
     res.end();
     return;
   }
 
   if(!scoreBoard.games[req.url.query.id]) {
-    res.write(404);
+    res.writeHead(404);
     res.end();
     return;
   }
@@ -52,21 +52,21 @@ router.get('/api/gamescore', (req, res) => {
 
 router.put('/api/gamescore', (req, res) => {
   let body = req.body;
-  if(!body.id || !body.name || !body.score) {
+  if(!body.gameName || !body.score || !body.id) {
     res.write(400);
     res.end();
     return;
   }
-
-  let games = new GameScore(gameId, body.name, body.score);
-  scoreBoard.games[body.id] = games;
+  let games = scoreBoard.games[req.body.id];
+  let gameUpdate = Object.assign(games, body);
+  scoreBoard.games[body.id] = gameUpdate;
 
   res.writeHead(202, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(games));
+  res.write(JSON.stringify(gameUpdate));
   res.end();
   return;
 });
 
-const server = module.exports = http.createServer(router.route);
+module.exports = http.createServer(router.route);
