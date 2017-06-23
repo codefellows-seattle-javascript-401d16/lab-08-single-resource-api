@@ -30,47 +30,52 @@ router.post('/api/climberprofile', (req, res)=>{
 //creating route for Read/Get
 router.get('/api/climberprofile', (req, res) =>{
   console.log('server.js: hit the get req');
-  if (!climberPool[req.url.query]) {
+  if (!req.url.query.id) {
+    console.log('breakpoint 1');
+    res.writeHead(400);
+    // res.write(`Please input an id`);
+    res.end();
+    return;
+  }
+  if (!climberPool[req.url.query.id]) {
     res.writeHead(404);
     res.write(`No profile found with that id`);
     res.end();
     return;
   }
-  if (!req.url.query) {
-    res.writeHead(400);
-    res.write(`Please input an id`);
-    res.end();
-    return;
-  }
-  console.log(`get router id: `, req.url.query);
+  console.log('breakpoint 2');
+  console.log(`get router id: `, req.url.query.id);
   res.writeHead(200, {
     'Content-Type' : 'application/json',
   });
-  res.write(`Here is the requested profile\n ${climberPool[req.url.query]}`);
+  res.write(JSON.stringify(climberPool[req.url.query.id]));
   res.end();
   return;
 });
 
 //creating route for DELETE
 router.delete('/api/climberprofile', (req, res) =>{
+  console.log('delete id: ', req.url.query.id);
+  console.log('climberpool id: ', climberPool[req.url.query.id]);
   if (!climberPool[req.url.query.id]) {
     res.writeHead(404);
-    res.write(`No profile was found with that id`);
+    // res.write(JSON.stringify(`No profile was found with that id`));
     res.end();
     return;
   }
+  console.log('break point');
   //delete the profile with matching the id
   delete climberPool[req.url.query.id];
   res.writeHead(204, {
     'Content-Type' : 'application/json',
   });
-  res.write(`You deleted profile ${req.url.query.id}`);
+  res.write(JSON.stringify(`You deleted profile ${req.url.query.id}`));
   res.end();
   return;
 });
 
 //creating route for Put
-router.get(`/api/climberprofile`, (req, res) =>{
+router.put(`/api/climberprofile`, (req, res) =>{
   if (!climberPool[req.url.query.id]) {
     res.writeHead(404);
     res.write(`No profile found with that id`);

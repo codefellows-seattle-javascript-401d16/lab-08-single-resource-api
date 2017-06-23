@@ -6,9 +6,9 @@ const querystring = require('querystring');
 //take in the request to parse
 module.exports = (req, callback) => {
   console.log('req url: ',req.url);
-  // console.log('req url query: ', req.url.query);
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
+  console.log('req url query: ', req.url.query);
   // need to parse the body
   if (req.method === `POST` || req.method === `PUT`) {
     let body = '';

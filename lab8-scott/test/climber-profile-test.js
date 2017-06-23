@@ -32,18 +32,48 @@ describe(`Testing all climber profile routes`, function(){
   });
 
   describe(`Testing GET method on /api/climberprofile`, () =>{
-    it(`should respond with a specific profile`, (done) => {
-      console.log('tempProfile id:', tempProfile.id);
-      superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+    // it(`should respond with a 200 and specific profile`, (done) => {
+    //   console.log('tempProfile id:', tempProfile.id);
+    //   superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+    //   .end((err, res) => {
+    //     if (err) return done(err);
+    //     expect(res.status).toEqual(200);
+    //     expect(res.body.id).toExist();
+    //     expect(res.body.age).toEqual(`30`);
+    //     expect(res.body.type).toEqual(`trad`);
+    //     done();
+    //   });
+    // });
+    it(`should respond with a 400`, (done) => {
+      superagent.get('localhost:3000/api/climberprofile')
       .end((err, res) => {
         if (err) return done(err);
-        expect(res.status).toEqual(200);
-        expect(res.body.id).toExist();
-        expect(res.body.age).toEqual(`30`);
-        expect(res.body.type).toEqual(`trad`);
+        expect(res.status).toEqual(400);
         done();
       });
     });
   });
 
+  // describe(`Testing DELETE method on /api/climberprofile`, () =>{
+  //   it(`should respond with a 204 if successfully deleted`, (done) => {
+  //     console.log('tempProfile id:', tempProfile.id);
+  //     superagent.delete(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+  //     .end((err, res) => {
+  //       if (err) return done(err);
+  //       expect(res.status).toEqual(204);
+  //       expect(res.body.id).toNotExist();
+  //       expect(res.body.age).toNotExist();
+  //       expect(res.body.type).toNotExist();
+  //       done();
+  //     });
+  //   });
+  //   it(`should respond with a 404 if id is not found`, (done) => {
+  //     superagent.delete(`localhost:3000/api/climberprofile?id=01234`)
+  //     .end((err, res) => {
+  //       if (err) return done(err);
+  //       expect(res.status).toEqual(404);
+  //       done();
+  //     });
+  //   });
+  // });
 });
