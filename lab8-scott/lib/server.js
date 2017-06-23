@@ -18,7 +18,6 @@ router.post('/api/climberprofile', (req, res)=>{
   let climberProfile = new ProfileConstructor(req.body.age, req.body.type);
   //putting the new profile id value as the key in the climberPool and set the new Profile as the value to that key id #
   climberPool[climberProfile.id] = climberProfile;
-  console.log('climber profile, server.js: ', climberPool);
   //respond that we recieved the request
   res.writeHead(200, {
     'Content-Type' : 'application/json',
@@ -54,18 +53,18 @@ router.get('/api/climberprofile', (req, res) =>{
 
 //creating route for DELETE
 router.delete('/api/climberprofile', (req, res) =>{
-  if (!climberPool[req.url.query]) {
+  if (!climberPool[req.url.query.id]) {
     res.writeHead(404);
     res.write(`No profile was found with that id`);
     res.end();
     return;
   }
   //delete the profile with matching the id
-  delete climberPool[req.url.query];
+  delete climberPool[req.url.query.id];
   res.writeHead(204, {
     'Content-Type' : 'application/json',
   });
-  res.write(`You deleted profile ${req.url.query}`);
+  res.write(`You deleted profile ${req.url.query.id}`);
   res.end();
   return;
 });
