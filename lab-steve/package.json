@@ -25,7 +25,6 @@
     "superagent": "^3.5.2"
   },
   "dependencies": {
-    "superagent": "^3.5.2",
     "uuid": "^3.1.0"
   }
 }

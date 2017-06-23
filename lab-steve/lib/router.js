@@ -11,10 +11,6 @@ const routes = {
 
 const router = module.exports = {};
 
-router.storeInGetObject = (key, value) => {
-  routes.GET[key] = value;
-};
-
 router.get = (pathname, callback) => {
   routes.GET[pathname] = callback;
 };
