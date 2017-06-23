@@ -33,10 +33,12 @@
 
 ## Server Endpoints
 ### `/api/simple-resource-name`
+
+// NOTE... I used posts, instead of users... so I routed the information to food types rather than an id...
 * `POST` request
-  * pass data as stringifed json in the body of a post request to create a resource
+  * pass data as stringifed json in the body of a post request to create a resource-DONE
 * `GET` request
-  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json
+  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json-DONE
 * `DELETE` request
   * pass an `?id=<uuid>` in the query string to delete a specific resource
   * should return 204 status with no content in the body

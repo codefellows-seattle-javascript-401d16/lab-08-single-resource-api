@@ -8,152 +8,108 @@ const uuid = require('uuid');
 
 var storage = {};
 
-function User(title, content) {
+function Food(type, content) {
   this.id = uuid.v1();
-  this.title = title;
+  this.type = type;
   this.content = content;
   this.date= new Date();
 }
 
 
-router.post('/newUser', (req, res) => {
-  if(!req.body){ // if(!req.body.content){
+router.post('/foods', (req, res) => {
+  if(!req.body.type){ // if(!req.body.content){
     res.writeHead(400);
     res.end();
     return;
   }
-
-  let user = new User(req.body.title, req.body.content);
-  storage[user.title] = user;// storage[user.id] = user;
-  console.log(req.body);
+  if(!req.body.content){ // if(!req.body.content){
+    res.writeHead(400);
+    res.end();
+    return;
+  }
+  let food = new Food(req.body.type, req.body.content);
+  storage[food.id] = food;// storage[user.id] = user;
+  // console.log('req.body...'+req.body);
   // console.log(req.url);
-  console.log(Object.keys(storage)[0]);
+  console.log('new food....===', JSON.stringify(food.type));
+  // console.log('res.url....'+JSON.stringify(req.url));
+  // console.log(Object.keys(storage));
+  // console.log(food.id);
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-  res.write('Your content has been saved into storage!!');
-  res.write(JSON.stringify(user))
+  res.write(JSON.stringify(food))
   res.end();
 });
 
-router.get('/readTitles', (req, res) => {
-  console.log(storage);
-  if(!req.body){ // if(!req.body.content){ why is this... need to check
+router.get('/foods', (req, res) => {
+  console.log('get request');
+  // console.log(storage);
+  if(!req.body){
     res.writeHead(400);
     res.end();
     return;
   }
-  res.write(JSON.stringify(storage));
-  let titleInfo = [];
-  console.log(storage); //LEFT OFF AROUND HERE
-  for (var i=0; i< storage.length; i++){
-    if (req.body.title===storage[req.body.title[i]]) {
-      console.log('almost!!!');
-      titleInfo.push(storage[i]);
-    } else {console.log('almost!!');}
+  let typeInfo = [];
+  for (var keys in storage){
+    // console.log(storage[keys]+'should equal'+storage[keys].type);
+    // console.log('its working!');
+    if (req.url.query.type === storage[keys].type){
+      typeInfo.push(storage[keys]);
+    }
   }
-  if (titleInfo===[]) {
-    res.write('these are all of the titles that matched your request...\n'+JSON.stringify(titleInfo));
+  if (typeInfo.length>0) {
+    console.log(JSON.stringify(typeInfo));
+    res.write(JSON.stringify(typeInfo));
   } else {
     res.write('no title with that information!!');
   }
   res.end();
 });
 
-router.delete('/deleteUser', (req,res) => {
+router.delete('/foods', (req,res) => {
   console.log(storage);
-  if(!req.body){ // if(!req.body.content){
+  if(!req.body){
     res.writeHead(400);
     res.end();
     return;
   }
   console.log('im inside of delete now');
-  console.log(Object.keys(storage)[0]);
-  console.log(req.body.title);
-  console.log(JSON.stringify(req.body.title));
-  res.write(JSON.stringify(Object.keys(storage)[0]));
+  let deletedFoods = [];
   let numDeleted = 0;
-  for (var i=0; i< storage.length; i++){
-    if (req.body.title===storage[req.body.title[i]]) {
-      delete storage[storage.title[i]];
+  for (var keys in storage){
+    if (req.url.query.type === storage[keys].type){
+      deletedFoods.push(storage[keys]);
+      delete storage[keys];
       numDeleted+=1;
     }
   }
-  res.write(JSON.stringify('You deleted '+numDeleted+' users! post some more stuff... :)'));
+  console.log(deletedFoods);
+  res.write(JSON.stringify(deletedFoods));
+  // res.write('You deleted '+JSON.stringify(numDeleted)+' types! post some more stuff... :)');
   res.end();
 });
 
-router.delete('/deleteUser', (req,res) => {
-  console.log(storage);
-  if(!req.body){ // if(!req.body.content){
+router.put('/foods', (req,res) => {
+  if(!req.body){
     res.writeHead(400);
     res.end();
     return;
   }
-  console.log('im inside of delete now');
-  console.log(Object.keys(storage)[0]);
-  console.log(req.body.title);
-  console.log(JSON.stringify(req.body.title));
-  res.write(JSON.stringify(Object.keys(storage)[0]));
-  let numDeleted = 0;
-  for (var i=0; i< storage.length; i++){
-    if (req.body.title===Object.keys(storage)[i]) {
-      delete storage[storage.title[i]];
-      numDeleted+=1;
+  let changedFoods = [];
+  let numChanged = 0;
+  for (var keys in storage){
+    if (req.url.query.type === storage[keys].type){
+      storage[keys].content = req.url.query.content;
+      changedFoods.push(storage[keys]);
+      numChanged += 1;
     }
   }
-  res.write(JSON.stringify('You deleted '+numDeleted+' users! post some more stuff... :)'));
+  res.write(JSON.stringify(changedFoods));
+  res.write('You deleted '+JSON.stringify(numChanged)+' types! post some more stuff... :)');
   res.end();
 });
 
 
 
-router.get('/newSoup', (req, res) => {
-  let user = new User();
-  storage[users] = user;
-  res.write('hello new user! Your new profile has been created! It is below... :)');
-  res.write(user);
-  res.end();
-});
-
-
-
-
-// router.get('/hello', (req, res) => {
-//   res.write('yeyehheey');
-//   res.end();
-// });
-
-
-
-// router.get('/api/notes', (req, res) => {
-//   if(!req.url.query.id){
-//     res.writeHead(400);
-//     res.end();
-//     return ;
-//   }
-//
-//   if(!storage[req.url.query.id]){
-//     res.writeHead(404)
-//     console.log('suhh dude');
-//     res.end();
-//     return ;
-//   }
-//
-//   res.writeHead(200, {
-//     'Content-Type': 'application/json',
-//   });
-
-//   res.write(JSON.stringify(storage[req.url.query.id]));
-//   res.end();
-//
-// });
-
-// create server
 const server = module.exports = http.createServer(router.route);
-
-
-// how we did it first
-//http.createServer((req, res) => {
-  //router.route(req,res)
-//})
