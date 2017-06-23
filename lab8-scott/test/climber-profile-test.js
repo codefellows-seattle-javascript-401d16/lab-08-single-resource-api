@@ -46,9 +46,9 @@ describe(`Testing all climber profile routes`, function(){
     // });
     it(`should respond with a 400`, (done) => {
       superagent.get('localhost:3000/api/climberprofile')
-      .end((err, res) => {
-        if (err) return done(err);
-        expect(res.status).toEqual(400);
+      .end((err) => {
+        console.log('err-status: ', err.status);
+        expect(err.status).toEqual(400);
         done();
       });
     });

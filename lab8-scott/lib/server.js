@@ -31,19 +31,20 @@ router.post('/api/climberprofile', (req, res)=>{
 router.get('/api/climberprofile', (req, res) =>{
   console.log('server.js: hit the get req');
   if (!req.url.query.id) {
-    console.log('breakpoint 1');
-    res.writeHead(400);
-    // res.write(`Please input an id`);
+    res.writeHead(400, {
+      'Content-Type': 'text/plain',
+    });
     res.end();
     return;
   }
   if (!climberPool[req.url.query.id]) {
+    console.log('breakpoint 1');
     res.writeHead(404);
+    console.log('breakpoint 2');
     res.write(`No profile found with that id`);
     res.end();
     return;
   }
-  console.log('breakpoint 2');
   console.log(`get router id: `, req.url.query.id);
   res.writeHead(200, {
     'Content-Type' : 'application/json',
