@@ -5,10 +5,8 @@ const querystring = require('querystring');
 
 //take in the request to parse
 module.exports = (req, callback) => {
-  console.log('req url: ',req.url);
   req.url = url.parse(req.url);
   req.url.query = querystring.parse(req.url.query);
-  console.log('req url query: ', req.url.query);
   // need to parse the body
   if (req.method === `POST` || req.method === `PUT`) {
     let body = '';
@@ -16,12 +14,10 @@ module.exports = (req, callback) => {
       body += buffer.toString();
     });
     //try to parse the string if the header content type is application/json
-    req.on('end', (err) => {
+    req.on('end', () => {
       req.text = body;
-      console.log('req text: ',req.text);
       try {
         req.body = JSON.parse(body);
-        console.log('req body: ',req.body);
         callback(null);
       } catch (err){
         callback(err);

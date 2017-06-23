@@ -41,7 +41,6 @@ describe(`Testing all climber profile routes`, function(){
 
   describe(`Testing GET method on /api/climberprofile`, () =>{
     it(`should respond with a 200 and specific profile`, (done) => {
-      console.log('tempProfile id:', tempProfile.id);
       superagent.get(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
       .end((err, res) => {
         if (err) return done(err);
@@ -60,35 +59,54 @@ describe(`Testing all climber profile routes`, function(){
       });
     });
     it(`should respond with a 404`, (done) => {
-      superagent.get('localhost:3000/api/climberprofileid=1234')
+      superagent.get('localhost:3000/api/climberprofile?id=1234')
       .end((err) => {
-        console.log('err-status: ', err.status);
         expect(err.status).toEqual(404);
         done();
       });
     });
   });
 
-  // describe(`Testing DELETE method on /api/climberprofile`, () =>{
-  //   it(`should respond with a 204 if successfully deleted`, (done) => {
-  //     console.log('tempProfile id:', tempProfile.id);
-  //     superagent.delete(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.status).toEqual(204);
-  //       expect(res.body.id).toNotExist();
-  //       expect(res.body.age).toNotExist();
-  //       expect(res.body.type).toNotExist();
-  //       done();
-  //     });
-  //   });
-  //   it(`should respond with a 404 if id is not found`, (done) => {
-  //     superagent.delete(`localhost:3000/api/climberprofile?id=01234`)
-  //     .end((err, res) => {
-  //       if (err) return done(err);
-  //       expect(res.status).toEqual(404);
-  //       done();
-  //     });
-  //   });
-  // });
+  describe(`Testing PUT method on /api/climberprofile`, () =>{
+    it(`should respond with a 202 status and {age: '23', type: 'sport'} if successfully updated`, (done) => {
+      superagent.put(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+      .send({age: '23', type: 'sport'})
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(202);
+        expect(res.body.id).toExist();
+        expect(res.body.age).toEqual('23');
+        expect(res.body.type).toEqual('sport');
+        done();
+      });
+    });
+    it(`should respond with a 400 if id is not found`, (done) => {
+      superagent.put(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+      .end((err) => {
+        expect(err.status).toEqual(400);
+        done();
+      });
+    });
+  });
+
+  describe(`Testing DELETE method on /api/climberprofile`, () =>{
+    it(`should respond with a 204 if successfully deleted`, (done) => {
+      superagent.delete(`localhost:3000/api/climberprofile?id=${tempProfile.id}`)
+      .end((err, res) => {
+        if (err) return done(err);
+        expect(res.status).toEqual(204);
+        expect(res.body.id).toNotExist();
+        expect(res.body.age).toNotExist();
+        expect(res.body.type).toNotExist();
+        done();
+      });
+    });
+    it(`should respond with a 404 if id is not found`, (done) => {
+      superagent.delete(`localhost:3000/api/climberprofile?id=01234`)
+      .end((err) => {
+        expect(err.status).toEqual(404);
+        done();
+      });
+    });
+  });
 });
