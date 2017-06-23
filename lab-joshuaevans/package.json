@@ -1,0 +1,23 @@
+{
+  "name": "lab-joshuaevans",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "expect": "^1.20.2",
+    "lint": "^1.1.2",
+    "mocha": "^3.4.2",
+    "superagent": "^3.5.2",
+    "uuid": "^3.1.0"
+  },
+  "dependencies": {
+    "fs-extra": "^3.0.1"
+  }
+}
