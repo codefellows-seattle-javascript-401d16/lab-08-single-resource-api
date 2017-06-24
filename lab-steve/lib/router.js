@@ -30,7 +30,10 @@ router.put = (pathname, callback) => {
 router.route = (req, res) => {
   requestParse(req, (err) => {
     if(err){
-      res.writeHead(400);
+      res.writeHead(400, {
+        'Content-Type' : 'text/plain',
+      });
+      res.write('Bad request from (router.js).');
       res.end();
       return;
     }
@@ -38,9 +41,11 @@ router.route = (req, res) => {
     if(routeHandler){
       routeHandler(req, res);
     } else {
-      res.writeHead(404);
+      res.writeHead(404, {
+        'Content-Type' : 'text/plain',
+      });
+      res.write('Route not found (router.js).');
       res.end();
     }
   });
 };
-console.log(router.route);

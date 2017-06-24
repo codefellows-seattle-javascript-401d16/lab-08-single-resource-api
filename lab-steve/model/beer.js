@@ -10,4 +10,4 @@ const Beer = module.exports = function(name, grain, hops, yeast) {
   this.yeast = yeast;
 };
 
-console.log('The basics: ', Beer);
+// console.log('The basics: ', Beer);
