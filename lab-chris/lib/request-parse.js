@@ -13,7 +13,7 @@ module.exports = (req, callback) => {
       text  += buf.toString();
     });
 
-    req.on('end', (err) => {
+    req.on('end', () => {
       req.text = text;
       try {
         req.body = JSON.parse(text);
