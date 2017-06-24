@@ -28,87 +28,113 @@ router.post('/foods', (req, res) => {
     return;
   }
   let food = new Food(req.body.type, req.body.content);
-  storage[food.id] = food;// storage[user.id] = user;
-  // console.log('req.body...'+req.body);
-  // console.log(req.url);
-  console.log('new food....===', JSON.stringify(food.type));
-  // console.log('res.url....'+JSON.stringify(req.url));
-  // console.log(Object.keys(storage));
-  // console.log(food.id);
+  storage[food.id] = food;
   res.writeHead(200, {
     'Content-Type': 'application/json',
   });
-  res.write(JSON.stringify(food))
+  res.write(JSON.stringify(food));
   res.end();
 });
 
 router.get('/foods', (req, res) => {
   console.log('get request');
   // console.log(storage);
-  if(!req.body){
-    res.writeHead(400);
+  if(!req.url.query.id){
+    res.writeHead(400, {
+      'Content-Type':'plain/text',
+    });
+    res.write('you need to send an id');
     res.end();
     return;
   }
-  let typeInfo = [];
-  for (var keys in storage){
-    // console.log(storage[keys]+'should equal'+storage[keys].type);
-    // console.log('its working!');
-    if (req.url.query.type === storage[keys].type){
-      typeInfo.push(storage[keys]);
-    }
+  if(!storage[req.url.query.id]){
+    res.writeHead(404, {
+      'Content-Type':'plain/text',
+    });
+    res.write('file not found');
+    res.end();
+    return;
   }
-  if (typeInfo.length>0) {
-    console.log(JSON.stringify(typeInfo));
-    res.write(JSON.stringify(typeInfo));
-  } else {
-    res.write('no title with that information!!');
-  }
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
+  // console.log(res.status);
+  // console.log(req.url.query.id);
+  res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 });
 
 router.delete('/foods', (req,res) => {
-  console.log(storage);
-  if(!req.body){
-    res.writeHead(400);
+  // console.log('this is storage...',storage);
+
+  if(!req.url.query.id){
+    res.writeHead(400, {
+      'Content-Type':'plain/text',
+    });
+    res.write('you need to send an id');
     res.end();
     return;
   }
-  console.log('im inside of delete now');
-  let deletedFoods = [];
-  let numDeleted = 0;
-  for (var keys in storage){
-    if (req.url.query.type === storage[keys].type){
-      deletedFoods.push(storage[keys]);
-      delete storage[keys];
-      numDeleted+=1;
-    }
+  if(!storage[req.url.query.id]){
+    res.writeHead(404, {
+      'Content-Type':'plain/text',
+    });
+    res.write('file not found');
+    res.end();
+    return;
   }
-  console.log(deletedFoods);
-  res.write(JSON.stringify(deletedFoods));
-  // res.write('You deleted '+JSON.stringify(numDeleted)+' types! post some more stuff... :)');
+  delete storage[req.url.query.id];
+  res.writeHead(204, {
+    'Content-Type': 'application/json',
+  });
   res.end();
 });
 
 router.put('/foods', (req,res) => {
-  if(!req.body){
-    res.writeHead(400);
+  if(!req.body) {
+    res.writeHead(400,{
+      'Content-Type':'plain/text',
+    });
+    res.write('body not found');
     res.end();
     return;
   }
-  let changedFoods = [];
-  let numChanged = 0;
-  for (var keys in storage){
-    if (req.url.query.type === storage[keys].type){
-      storage[keys].content = req.url.query.content;
-      changedFoods.push(storage[keys]);
-      numChanged += 1;
-    }
+  if(!req.url.query.id){
+    res.writeHead(400, {
+      'Content-Type':'plain/text',
+    });
+    res.write('you need to send an id');
+    res.end();
+    return;
   }
-  res.write(JSON.stringify(changedFoods));
-  res.write('You deleted '+JSON.stringify(numChanged)+' types! post some more stuff... :)');
+  if(!storage[req.url.query.id]){
+    res.writeHead(404, {
+      'Content-Type':'plain/text',
+    });
+    res.write('file not found');
+    res.end();
+    return;
+  }
+  storage[req.url.query.id].content = req.body.content;
+  storage[req.url.query.id].type = req.body.type;
+
+  res.writeHead(200, {
+    'Content-Type': 'application/json',
+  });
+  res.write(JSON.stringify(storage[req.url.query.id]));
   res.end();
 });
+  // let changedFoods = [];
+  // let numChanged = 0;
+  // for (var keys in storage){
+  //   if (req.url.query.id === storage[keys].type){
+  //     storage[keys].content = req.url.query.content;
+  //     changedFoods.push(storage[keys]);
+  //     numChanged += 1;
+  //     console.log(storage[keys]);
+  //   }
+  // }
+
 
 
 
