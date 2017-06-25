@@ -33,6 +33,15 @@ router.post('/api/beers', (req, res) => {
 });
 
 router.put('/api/beers', (req, res) => {
+  if(!req.url.query.id) {
+    res.writeHead(400, {
+      'Content-Type' : 'text/plain',
+    });
+    res.write('You need to include a query string with a valid ID (?id=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)!');
+    res.end();
+    return;
+  }
+
   if(!server.storage[req.url.query.id]) {
     res.writeHead(404, {
       'Content-Type' : 'text/plain',
@@ -100,8 +109,8 @@ router.get('/api/beers', (req, res) => {
     res.writeHead(200, {
       'Content-Type' : 'application/json',
     });
-    res.write(JSON.stringify(Object.keys(server.storage).map(key => server.storage[key])));
-    // res.write(JSON.stringify({ beers: server.storage }));
+    res.write(JSON.stringify(Object.keys(server.storage)));
+    // res.write(JSON.stringify(Object.keys(server.storage).map(key => server.storage[key]))); //this would return an array of all beer objects
     res.end();
     return;
   }
