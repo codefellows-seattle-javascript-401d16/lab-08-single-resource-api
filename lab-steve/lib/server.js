@@ -22,7 +22,7 @@ router.post('/api/beers', (req, res) => {
   let beer = new Beer(req.body.name, req.body.grain, req.body.hops, req.body.yeast);
   server.storage[beer.id] = beer;
   // console.log(beer);
-  console.log('Storage now contains: ', server.storage);
+  // console.log('Storage now contains: ', server.storage);
 
   res.writeHead(201, {
     'Content-Type' : 'application/json',
@@ -59,7 +59,7 @@ router.put('/api/beers', (req, res) => {
     yeast: req.body.yeast,
   };
 
-  console.log('Storage now contains: ', server.storage);
+  // console.log('Storage now contains: ', server.storage);
   res.writeHead(202, {
     'Content-Type' : 'application/json',
   });
@@ -86,7 +86,7 @@ router.delete('/api/beers', (req, res) => {
     return;
   }
   delete server.storage[req.url.query.id];
-  console.log('Storage now contains: ', server.storage);
+  // console.log('Storage now contains: ', server.storage);
   res.writeHead(204, {
     'Content-Type' : 'text/plain',
   });
