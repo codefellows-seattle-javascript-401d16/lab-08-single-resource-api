@@ -4,9 +4,10 @@ const http = require('http');
 const router = require('./router.js');
 const Beer = require('../model/beer.js');
 
+let server = module.exports = {};
 
 //create an object to store beers in
-let storage = {};
+server.storage = {};
 
 router.post('/api/beers', (req, res) => {
   if(!req.body.name || !req.body.grain || !req.body.hops || !req.body.yeast) {
@@ -17,14 +18,14 @@ router.post('/api/beers', (req, res) => {
     res.end();
     return;
   }
-  //use ../model/beer.js constructor and create new Beer then store the beer object in the storage object above.
+  //use ../model/beer.js constructor and create new Beer then store the beer object in the server.storage object above.
   let beer = new Beer(req.body.name, req.body.grain, req.body.hops, req.body.yeast);
-  storage[beer.id] = beer;
+  server.storage[beer.id] = beer;
   // console.log(beer);
-  console.log('Storage now contains: ', storage);
+  console.log('Storage now contains: ', server.storage);
 
   res.writeHead(201, {
-    'Content-Type' : 'application/JSON',
+    'Content-Type' : 'application/json',
   });
   res.write(JSON.stringify(beer));
   res.end();
@@ -32,7 +33,7 @@ router.post('/api/beers', (req, res) => {
 });
 
 router.put('/api/beers', (req, res) => {
-  if(!storage[req.url.query.id]) {
+  if(!server.storage[req.url.query.id]) {
     res.writeHead(404, {
       'Content-Type' : 'text/plain',
     });
@@ -50,7 +51,7 @@ router.put('/api/beers', (req, res) => {
     return;
   }
 
-  storage[req.url.query.id] = {
+  server.storage[req.url.query.id] = {
     id: req.url.query.id,
     name: req.body.name,
     grain:  req.body.grain,
@@ -58,11 +59,11 @@ router.put('/api/beers', (req, res) => {
     yeast: req.body.yeast,
   };
 
-  console.log('Storage now contains: ', storage);
+  console.log('Storage now contains: ', server.storage);
   res.writeHead(202, {
-    'Content-Type' : 'application/JSON',
+    'Content-Type' : 'application/json',
   });
-  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.write(JSON.stringify(server.storage[req.url.query.id]));
   res.end();
   return;
 });
@@ -76,7 +77,7 @@ router.delete('/api/beers', (req, res) => {
     res.end();
     return;
   }
-  if(!storage[req.url.query.id]) {
+  if(!server.storage[req.url.query.id]) {
     res.writeHead(404, {
       'Content-Type' : 'text/plain',
     });
@@ -84,8 +85,8 @@ router.delete('/api/beers', (req, res) => {
     res.end();
     return;
   }
-  delete storage[req.url.query.id];
-  console.log('Storage now contains: ', storage);
+  delete server.storage[req.url.query.id];
+  console.log('Storage now contains: ', server.storage);
   res.writeHead(204, {
     'Content-Type' : 'text/plain',
   });
@@ -97,13 +98,14 @@ router.delete('/api/beers', (req, res) => {
 router.get('/api/beers', (req, res) => {
   if(!req.url.query.id) {
     res.writeHead(200, {
-      'Content-Type' : 'application/JSON',
+      'Content-Type' : 'application/json',
     });
-    res.write(JSON.stringify(Object.keys(storage).map(key => storage[key])));
+    res.write(JSON.stringify(Object.keys(server.storage).map(key => server.storage[key])));
+    // res.write(JSON.stringify({ beers: server.storage }));
     res.end();
     return;
   }
-  if(!storage[req.url.query.id]) {
+  if(!server.storage[req.url.query.id]) {
     res.writeHead(404, {
       'Content-Type' : 'text/plain',
     });
@@ -112,12 +114,12 @@ router.get('/api/beers', (req, res) => {
     return;
   }
   res.writeHead(200, {
-    'Content-Type' : 'application/JSON',
+    'Content-Type' : 'application/json',
   });
-  res.write(JSON.stringify(storage[req.url.query.id]));
+  res.write(JSON.stringify(server.storage[req.url.query.id]));
   res.end();
   return;
 });
 
 //create server, passing in router.route from the router object created in ./router.js
-module.exports = http.createServer(router.route);
+server.http = http.createServer(router.route);
