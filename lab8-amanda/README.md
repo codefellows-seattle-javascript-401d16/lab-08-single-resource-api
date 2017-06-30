@@ -10,57 +10,55 @@
   * write a question and observation on canvas
 
 # Build Tool Instructions
-* create a package.json that lists all dependencies and developer dependencies
+<!-- * create a package.json that lists all dependencies and developer dependencies
 * include an .eslintrc
 * include a .gitignore
 * include a readme with project description
-* include any npm scripts for starting server, linting, testing, etc
+* include any npm scripts for starting server, linting, testing, etc -->
 
 # Directions
-* Create these directories to organize your code:
- * lib
- * model
- * test
-* Create a HTTP Server using the http module
-* Create a Object Constructor that creates a _simple resource_ with at least 3 properties
- * An `id` property that is set to a unique **node-uuid** id is required
- * Also include two other properties of your choice (like name, creationDate, etc.)
-* Create a body parser to parse the json in the body of `POST` and `PUT` requests
-* Create a url parser that uses nodes `url` and `querystring` modules parse the request url
-* Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests
-* Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_
-* Create a storage module that will store resources by their type and id
+<!-- * Create these directories to organize your code:
+ <!-- * lib done --> -->
+ <!-- * model done -->
+ <!-- * test done -->
+<!-- * Create a HTTP Server using the http module done -->
+<!-- * Create a Object Constructor that creates a _simple resource_ with at least 3 properties done -->
+ <!-- * An `id` property that is set to a unique **node-uuid** id is required done -->
+ <!-- * Also include two other properties of your choice (like name, creationDate, etc.) done -->
+<!-- * Create a body parser to parse the json in the body of `POST` and `PUT` requests done -->
+<!-- * Create a url parser that uses nodes `url` and `querystring` modules parse the request url done -->
+<!-- * Create a Router Constructor that manages requests to `GET`, `POST`, `PUT`, and `DELETE` requests done -->
+<!-- * Create a route for doing `CREATE`, `READ`, and `DELETE` operations on your _simple resource_  done -->
+<!-- * Create a storage module that will store resources by their type and id done -->
 
 ## Server Endpoints
 ### `/api/simple-resource-name`
-* `POST` request
-  * pass data as stringifed json in the body of a post request to create a resource
-* `GET` request
-  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json
-* `DELETE` request
+<!-- * `POST` request
+  * pass data as stringifed json in the body of a post request to create a resource done -->
+<!-- * `GET` request
+  * pass an `?id=<uuid>` in the query string to retrieve a specific resource as json done -->
+<!-- * `DELETE` request
   * pass an `?id=<uuid>` in the query string to delete a specific resource
-  * should return 204 status with no content in the body
-* `PUT` request
-  * pass an `?id=<uuid>` in the query string to update a specific resource
-  * pass data as stringified json in the body of a put request to update a resource
-  * optionally decide whether the id of the resource is passed through the body or via the request url
+  * should return 204 status with no content in the body done -->
+<!-- * `PUT` request
+  * pass an `?id=<uuid>` in the query string to update a specific resource done
+  * pass data as stringified json in the body of a put request to update a resource done -->
 
 ## Tests
-* your tests should start your server when they begin and stop your server when they finish
+<!-- * your tests should start your server when they begin and stop your server when they finish
 * write a test to ensure that your api returns a status code of 404 for routes that have not been registered
-* write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below:
+* write tests to ensure your `/api/simple-resource-name` endpoint responds as described for each condition below: -->
   * `GET` - test 404, responds with 'not found' for valid request made with an id that was not found
-  * `GET` - test 400, responds with 'bad request' for if no id is provided in the query string
-  * `GET` - test 200, response body like `{<data>}` for a request made with a valid id
-  * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
-  * `POST` - test 201, response body like  `{<data>}` for a post request with a valid body
+  * `GET` - test 400, responds with 'bad request' for if no id is provided in the query string done
+<!-- * `GET` - test 200, response body like `{<data>}` for a request made with a valid id done -->
+  <!-- * `POST` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
+  * `POST` - test 201, response body like  `{<data>}` for a post request with a valid body -->
   * `PUT` - test 400, responds with 'bad request' for if no `body provided` or `invalid body`
-  * `PUT` - test 202, response body like  `{<data>}` for a put request with a valid  id
+  <!-- * `PUT` - test 202, response body like  `{<data>}` for a put request with a valid  id done -->
   * `DELETE` - test 404, responds with 'not found' for valid request made with an id that was not found
   * `DELETE` - test 204, response for a delete request with a valid id
 
 
-## Bonus
+<!-- ## Bonus
 * **2pts** a `GET` request to `/api/simple-resource-name` with no **?id=** should return an **array** of all of the ids for that resource
-  * if you do this you dont have to test 400 to `GET /api/simple-resource-name`
-
+  * if you do this you dont have to test 400 to `GET /api/simple-resource-name` -->
