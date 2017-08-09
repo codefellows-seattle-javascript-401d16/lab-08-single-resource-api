@@ -10,6 +10,7 @@ const Task = require('../model/task.js');
 //TODO*DONE: Create a storage module that will store resources by their type and id
 
 let storage = [];
+let IDs = [];
 
 //TODO*DONE: POST request - pass data as stringifed json in the body of a post request to create a resource
 
@@ -22,6 +23,7 @@ router.post('/api/tasks/', (req, res) => {
   }
   let newTask = new Task (req.body.name, req.body.xp, req.body.id);
   storage[newTask.id] = newTask;
+  IDs.push(newTask.id);
   res.writeHead(201, {
     'Content-type': 'application/json',
   });
@@ -36,12 +38,15 @@ router.get('/api/tasks/', (req, res) => {
   if(!req.url.query.id){
     res.writeHead(400);
     res.write('bad request');
+    res.write('\navailable IDs: ' + JSON.stringify(IDs));
+    console.log(IDs);
     res.end();
     return;
   }
   if(!storage[req.url.query.id]){
     res.writeHead(404);
     res.write('not found');
+    console.log(IDs);
     res.end();
     return;
   }
