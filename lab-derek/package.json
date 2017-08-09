@@ -6,7 +6,7 @@
   "directory": "test",
   "scripts": {
     "test": "mocha",
-    "lint": "eslint",
+    "lint": "eslint .",
     "start": "node index.js"
   },
   "keywords": [],
